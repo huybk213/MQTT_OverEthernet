@@ -841,6 +841,36 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>app_mqtt</GroupName>
+          <Files>
+            <File>
+              <FileName>app_mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\app_mqtt.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_mqtt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\app_mqtt.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/LwIP/apps/mqtt</GroupName>
+          <Files>
+            <File>
+              <FileName>mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Middlewares\Third_Party\LwIP\src\apps\mqtt\mqtt.c</FilePath>
+            </File>
+            <File>
+              <FileName>sntp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Middlewares\Third_Party\LwIP\src\apps\sntp\sntp.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

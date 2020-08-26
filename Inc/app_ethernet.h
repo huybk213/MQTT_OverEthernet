@@ -53,7 +53,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "lwip/netif.h"
-
+#include <stdbool.h>
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* DHCP process states */
@@ -69,7 +69,16 @@
 void User_notification(struct netif *netif);
 #ifdef USE_DHCP
 void DHCP_thread(void const * argument);
+
+/**
+ * @brief Get DHCP status
+ * @retval TRUE DHCP ready
+ *          FALSE DHCP not ready
+ */
+bool app_ethernet_dhcp_ready(void);
 #endif
+
+
 
 #ifdef __cplusplus
 }

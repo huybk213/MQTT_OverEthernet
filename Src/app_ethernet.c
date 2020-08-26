@@ -170,4 +170,9 @@ void DHCP_thread(void const * argument)
 }
 #endif  /* USE_DHCP */
 
+bool app_ethernet_dhcp_ready(void)
+{
+    return DHCP_state == DHCP_ADDRESS_ASSIGNED ? true : false;
+}
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

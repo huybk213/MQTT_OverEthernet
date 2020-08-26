@@ -450,7 +450,7 @@ void ethernetif_input( void const * argument )
   
   for( ;; )
   {
-    if (osSemaphoreWait( s_xSemaphore, TIME_WAITING_FOR_INPUT)==osOK)
+    if (osSemaphoreWait( s_xSemaphore, TIME_WAITING_FOR_INPUT) == osOK)
     {
       do
       {

@@ -54,7 +54,7 @@
 #include "app_ethernet.h"
 #include "httpserver-netconn.h"
 #include "lcd_log.h"
-
+#include "app_mqtt.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -129,7 +129,8 @@ static void StartThread(void const * argument)
   Netif_Config();
   
   /* Initialize webserver demo */
-  http_server_netconn_init();
+  // http_server_netconn_init();
+  app_mqtt_client_init();
   
   /* Notify user about the network interface config */
   User_notification(&gnetif);
@@ -139,7 +140,7 @@ static void StartThread(void const * argument)
   osThreadDef(DHCP, DHCP_thread, osPriorityBelowNormal, 0, configMINIMAL_STACK_SIZE * 2);
   osThreadCreate (osThread(DHCP), &gnetif);
 #endif
-
+  
   for( ;; )
   {
     /* Delete the Init Thread */ 

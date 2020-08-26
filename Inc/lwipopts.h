@@ -228,8 +228,8 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define DEFAULT_ACCEPTMBOX_SIZE         6
 #define DEFAULT_THREAD_STACKSIZE        500
 #define TCPIP_THREAD_PRIO               osPriorityHigh
-
-
+#define LWIP_DEBUG                      1
+#define LWIP_DNS                        1
 
 #endif /* __LWIPOPTS_H__ */
 

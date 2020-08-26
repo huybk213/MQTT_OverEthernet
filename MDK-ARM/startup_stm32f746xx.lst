@@ -945,10 +945,10 @@ interwork --depend=stm32746g_discovery\startup_stm32f746xx.d -ostm32746g_discov
 ery\startup_stm32f746xx.o -IROJ_DIR$\..\Inc -I.\RTE\_STM32746G_DISCOVERY -IC:\U
 sers\huybk213\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include -IC:\U
 sers\huybk213\AppData\Local\Arm\Packs\Keil\STM32F7xx_DFP\2.12.0\Drivers\CMSIS\D
-evice\ST\STM32F7xx\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB 
-SETA 1" --predefine="__UVISION_VERSION SETA 530" --predefine="_RTE_ SETA 1" --p
-redefine="STM32F746xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f7
-46xx.lst startup_stm32f746xx.s
+evice\ST\STM32F7xx\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISI
+ON_VERSION SETA 530" --predefine="_RTE_ SETA 1" --predefine="STM32F746xx SETA 1
+" --predefine="_RTE_ SETA 1" --list=startup_stm32f746xx.lst startup_stm32f746xx
+.s
 
 
 
@@ -2189,4 +2189,4 @@ Symbol: __main
       At line 204 in file startup_stm32f746xx.s
 Comment: __main used once
 2 symbols
-462 symbols in table
+461 symbols in table
