@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics International N.V. 
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
@@ -86,9 +86,16 @@ void User_notification(struct netif *netif)
     /* Update DHCP state machine */
     DHCP_state = DHCP_LINK_DOWN;
 #endif  /* USE_DHCP */
-    LCD_UsrLog ("The network cable is not connected \n");
+    LCD_UsrLog ("The network cable is not connected\n");
   } 
 }
+
+
+bool app_ethernet_dhcp_ready(void)
+{
+    return DHCP_state == DHCP_ADDRESS_ASSIGNED ? true : false;
+}
+
 
 #ifdef USE_DHCP
 /**
@@ -169,10 +176,5 @@ void DHCP_thread(void const * argument)
   }
 }
 #endif  /* USE_DHCP */
-
-bool app_ethernet_dhcp_ready(void)
-{
-    return DHCP_state == DHCP_ADDRESS_ASSIGNED ? true : false;
-}
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

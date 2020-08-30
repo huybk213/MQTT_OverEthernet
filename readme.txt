@@ -8,7 +8,7 @@
   * @brief   Description of the LwIP http server Netconn API.
   ******************************************************************************
   *
-  * Copyright (c) 2016 STMicroelectronics International N.V. All rights reserved.
+  * Copyright (c) 2017 STMicroelectronics International N.V. All rights reserved.
   *
   * Redistribution and use in source and binary forms, with or without 
   * modification, are permitted, provided that the following conditions are met:
@@ -42,7 +42,7 @@
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-   @endverbatim
+  @endverbatim
 
 @par Application Description 
 
@@ -75,7 +75,11 @@ that the System tick increments while executing the Ethernet Link ISR.
       
 @note The application needs to ensure that the SysTick time base is always set to 1 millisecond
       to have correct HAL operation.
-      
+
+@note The STM32F7xx devices can reach a maximum clock frequency of 216MHz but as this application uses SDRAM,
+      the system clock is limited to 200MHz. Indeed proper functioning of the SDRAM is only guaranteed 
+      at a maximum system clock frequency of 200MHz.
+
 For more details about this application, refer to UM1713 "STM32Cube interfacing with LwIP and applications"
 
 
@@ -105,6 +109,8 @@ Connectivity, LwIP, Ethernet, HTTP Server, Netconn, TCP/IP, FreeRTOS, DHCP
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Inc/lwipopts.h              LwIP stack configuration options
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Inc/FreeRTOSConfig.h        FreeRTOS configuration options
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Inc/httpserver-netconn.h    header for httpserver-netconn.c
+  - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Inc/fs.h                    header for fs.c
+  - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Inc/fsdata.h                header for fsdata.c
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/app_ethernet.c          Ethernet specific module
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/stm32f7xx_it.c          STM32 interrupt handlers
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/main.c                  Main program
@@ -112,20 +118,20 @@ Connectivity, LwIP, Ethernet, HTTP Server, Netconn, TCP/IP, FreeRTOS, DHCP
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/ethernetif.c            Interfacing LwIP to ETH driver
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/httpserver-netconn.c    httpserver netconn main thread
   - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/fs.c                    file system functions
-  - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/fsdata_custom.c                ROM filesystem data (html pages)
+  - LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/fsdata.c                ROM filesystem data (html pages)
   
         
 @par Hardware and Software environment
 
-  - This application runs on STM32F746xx devices.
+  - This application runs on STM32F767xx/STM32F769xx/STM32F777xx/STM32F779xx devices.
     
   - This application has been tested with the following environments:
-     - STM32746G-DISCOVERY board
+     - STM32F769I_DISCOVERY board
      - Http clients: Firefox Mozilla (v24) or Microsoft Internet Explorer (v8 and later)
      - DHCP server:  PC utility TFTPD32 (http://tftpd32.jounin.net/) is used as a DHCP server    
       
-  - STM32746G-DISCOVERY Set-up
-    - Connect the DK board to remote PC (through a crossover ethernet cable)
+  - STM32F769I_DISCOVERY Set-up
+    - Connect the STM32F769I_DISCOVERY board to remote PC (through a crossover ethernet cable)
       or to your local network (through a straight ethernet cable)
   
   - Remote PC Set-up

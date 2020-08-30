@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics International N.V. 
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
@@ -144,7 +144,7 @@ a lot of data that needs to be copied, this should be set high. */
 */
 
 /* 
-The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums by hardware:
+The STM32F7xx allows computing and verifying the IP, UDP, TCP and ICMP checksums by hardware:
  - To use this feature let the following define uncommented.
  - To disable it and process by CPU comment the  the checksum.
 */
@@ -164,7 +164,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
   #define CHECKSUM_CHECK_UDP              0
   /* CHECKSUM_CHECK_TCP==0: Check checksums by hardware for incoming TCP packets.*/
   #define CHECKSUM_CHECK_TCP              0
-  /* CHECKSUM_CHECK_ICMP==0: Check checksums by hardware for incoming ICMP packets.*/  
+  /* CHECKSUM_CHECK_ICMP==0: Check checksums by hardware for incoming ICMP packets.*/
   #define CHECKSUM_GEN_ICMP               0
 #else
   /* CHECKSUM_GEN_IP==1: Generate checksums in software for outgoing IP packets.*/
@@ -179,7 +179,7 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
   #define CHECKSUM_CHECK_UDP              1
   /* CHECKSUM_CHECK_TCP==1: Check checksums in software for incoming TCP packets.*/
   #define CHECKSUM_CHECK_TCP              1
-  /* CHECKSUM_CHECK_ICMP==1: Check checksums by hardware for incoming ICMP packets.*/  
+  /* CHECKSUM_CHECK_ICMP==1: Check checksums by hardware for incoming ICMP packets.*/
   #define CHECKSUM_GEN_ICMP               1
 #endif
 

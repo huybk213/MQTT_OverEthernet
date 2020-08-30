@@ -1,15 +1,9 @@
 
-.vscode/
-
-*.huybk213
-
 *.o
 
 *.crf
 
 *.d
-
-*.dep
 
 *.htm
 
@@ -17,6 +11,12 @@
 
 *.map
 
-*.axf
+*.dep
 
-MDK-ARM/Project.uvoptx
+*.sct
+
+*.iex
+
+.vscode/
+
+*.lst

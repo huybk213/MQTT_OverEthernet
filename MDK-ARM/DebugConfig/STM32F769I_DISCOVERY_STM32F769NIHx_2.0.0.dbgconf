@@ -1,7 +1,7 @@
-// File: STM32F74x_75x.dbgconf
+// File: STM32F76x_77x.dbgconf
 // Version: 1.0.0
-// Note: refer to STM32F75xxx STM32F74xxx reference manual (RM0385)
-//       refer to STM32F75xxx STM32F74xxx datasheets
+// Note: refer to STM32F76xxx STM32F77xxx reference manual (RM0410)
+//       refer to STM32F76xxx STM32F77xxx datasheets
 
 // <<< Use Configuration Wizard in Context Menu >>>
 
@@ -20,6 +20,7 @@ DbgMCU_CR = 0x00000007;
 //   <o.23> DBG_I2C3_SMBUS_TIMEOUT   <i> SMBUS timeout mode stopped when core is halted
 //   <o.22> DBG_I2C2_SMBUS_TIMEOUT   <i> SMBUS timeout mode stopped when core is halted
 //   <o.21> DBG_I2C1_SMBUS_TIMEOUT   <i> SMBUS timeout mode stopped when core is halted
+//   <o.13> DBG_CAN3_STOP            <i> Debug CAN3 stopped when core is halted
 //   <o.12> DBG_IWDG_STOP            <i> Debug independent watchdog stopped when core is halted
 //   <o.11> DBG_WWDG_STOP            <i> Debug window watchdog stopped when core is halted
 //   <o.10> DBG_RTC_STOP             <i> RTC stopped when core is halted

@@ -4,8 +4,8 @@
 
 **  File        : LinkerScript.ld
 **
-**  Abstract    : Linker script for STM32F746NGHx Device with
-**                1024KByte FLASH, 320KByte RAM
+**  Abstract    : Linker script for STM32F769NIHx Device with
+**                2048KByte FLASH, 512KByte RAM
 **
 **                Set heap size, stack size and stack location according
 **                to application requirements.
@@ -33,20 +33,21 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20050000;    /* end of RAM */
+_estack = 0x20080000;    /* end of RAM */
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
-_Min_Stack_Size = 0x460; /* required amount of stack */
+_Min_Stack_Size = 0x400; /* required amount of stack */
 
 /* Specify the memory areas */
 MEMORY
 {
-FLASH (rx)       : ORIGIN = 0x08000000, LENGTH = 1024K
-RAM (xrw)        : ORIGIN = 0x20000000, LENGTH = 307K
-Memory_B1(xrw)   : ORIGIN = 0x2004C000, LENGTH = 0x80
-Memory_B2(xrw)   : ORIGIN = 0x2004C080, LENGTH = 0x80
-Memory_B3(xrw)   : ORIGIN = 0x2004C100, LENGTH = 0x17d0 
-Memory_B4(xrw)   : ORIGIN = 0x2004D8D0, LENGTH = 0x17d0
+FLASH (rx)      : ORIGIN =  0x8000000, LENGTH = 2048K
+RAM (xrw)        : ORIGIN = 0x20000000, LENGTH = 499K
+Memory_B1(xrw)   : ORIGIN = 0x2007C000, LENGTH = 0x80
+Memory_B2(xrw)   : ORIGIN = 0x2007C080, LENGTH = 0x80
+Memory_B3(xrw)   : ORIGIN = 0x2007C100, LENGTH = 0x17d0 
+Memory_B4(xrw)   : ORIGIN = 0x2007D8D0, LENGTH = 0x17d0 
+
 }
 
 /* Define output sections */
@@ -167,10 +168,11 @@ SECTIONS
     libgcc.a ( * )
   }
 
-   .ARM.attributes 0 : { *(.ARM.attributes) }
+  .ARM.attributes 0 : { *(.ARM.attributes) }
   .RxDecripSection (NOLOAD) : { *(.RxDescripSection) } >Memory_B1
-  .TxDescripSection (NOLOAD) : { *(.TxDescripSection) } >Memory_B2
+  .TxDescripSection (NOLOAD) : { *(.DMATxDscrTab_section) } >Memory_B2
   .RxarraySection (NOLOAD) : { *(.RxBUF) } >Memory_B3
   .TxarraySection (NOLOAD) : { *(.TxBUF) } >Memory_B4 
 }
+
 

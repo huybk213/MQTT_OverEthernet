@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics International N.V. 
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
@@ -77,27 +77,27 @@
          Please refer to MPU_Config() in main.c file.
  */
 #if defined ( __CC_ARM   )
-ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB] __attribute__((at(0x2004C000)));/* Ethernet Rx DMA Descriptors */
+ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB] __attribute__((at(0x2007C000)));/* Ethernet Rx DMA Descriptors */
 
-ETH_DMADescTypeDef  DMATxDscrTab[ETH_TXBUFNB] __attribute__((at(0x2004C080)));/* Ethernet Tx DMA Descriptors */
+ETH_DMADescTypeDef  DMATxDscrTab[ETH_TXBUFNB] __attribute__((at(0x2007C080)));/* Ethernet Tx DMA Descriptors */
 
-uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __attribute__((at(0x2004C100))); /* Ethernet Receive Buffers */
+uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __attribute__((at(0x2007C100))); /* Ethernet Receive Buffers */
 
-uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __attribute__((at(0x2004D8D0))); /* Ethernet Transmit Buffers */
+uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __attribute__((at(0x2007D8D0))); /* Ethernet Transmit Buffers */
 
 #elif defined ( __ICCARM__ ) /*!< IAR Compiler */
   #pragma data_alignment=4 
 
-#pragma location=0x2004C000
+#pragma location=0x2007C000
 __no_init ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB];/* Ethernet Rx DMA Descriptors */
 
-#pragma location=0x2004C080
+#pragma location=0x2007C080
 __no_init ETH_DMADescTypeDef  DMATxDscrTab[ETH_TXBUFNB];/* Ethernet Tx DMA Descriptors */
 
-#pragma location=0x2004C100
+#pragma location=0x2007C100
 __no_init uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE]; /* Ethernet Receive Buffers */
 
-#pragma location=0x2004D8D0
+#pragma location=0x2007D8D0
 __no_init uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE]; /* Ethernet Transmit Buffers */
 
 #elif defined ( __GNUC__ ) /*!< GNU Compiler */
@@ -120,6 +120,7 @@ ETH_HandleTypeDef EthHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 static void ethernetif_input( void const * argument );
+static void RMII_Thread( void const * argument );
 
 /* Private functions ---------------------------------------------------------*/
 /*******************************************************************************
@@ -147,7 +148,6 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *heth)
         RMII_MII_CRS_DV -------------------> PA7
         RMII_MII_RXD0 ---------------------> PC4
         RMII_MII_RXD1 ---------------------> PC5
-        RMII_MII_RXER ---------------------> PG2
         RMII_MII_TX_EN --------------------> PG11
         RMII_MII_TXD0 ---------------------> PG13
         RMII_MII_TXD1 ---------------------> PG14
@@ -165,8 +165,8 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *heth)
   GPIO_InitStructure.Pin = GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-  /* Configure PG2, PG11, PG13 and PG14 */
-  GPIO_InitStructure.Pin =  GPIO_PIN_2 | GPIO_PIN_11 | GPIO_PIN_13 | GPIO_PIN_14;
+  /* Configure PG11, PG13 and PG14 */
+  GPIO_InitStructure.Pin =  GPIO_PIN_11 | GPIO_PIN_13 | GPIO_PIN_14;
   HAL_GPIO_Init(GPIOG, &GPIO_InitStructure);
   
   /* Enable the Ethernet global Interrupt */
@@ -251,6 +251,19 @@ static void low_level_init(struct netif *netif)
 
   /* Enable MAC and DMA transmission and reception */
   HAL_ETH_Start(&EthHandle);
+  
+  /* Check if it's a STM32F76xxx Revision A */
+  if(HAL_GetREVID() == 0x1000)
+  { 
+    /* 
+      Partial workaround for the Ethernet erroneous data received in RMII configuration Hardware Bug 
+     (please refer to the STM32F76xxx STM32F77xxx Errata sheet) 
+      
+      This thread will keep resetting the RMII interface until good frames are received
+    */
+    osThreadDef(RMII_Watchdog, RMII_Thread, osPriorityRealtime, 0, configMINIMAL_STACK_SIZE);
+    osThreadCreate (osThread(RMII_Watchdog), NULL);
+  }
 }
 
 
@@ -378,7 +391,7 @@ static struct pbuf * low_level_input(struct netif *netif)
     /* We allocate a pbuf chain of pbufs from the Lwip buffer pool */
     p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
   }
-  
+
   if (p != NULL)
   {
     dmarxdesc = EthHandle.RxFrameInfos.FSRxDesc;
@@ -450,7 +463,7 @@ void ethernetif_input( void const * argument )
   
   for( ;; )
   {
-    if (osSemaphoreWait( s_xSemaphore, TIME_WAITING_FOR_INPUT) == osOK)
+    if (osSemaphoreWait( s_xSemaphore, TIME_WAITING_FOR_INPUT)==osOK)
     {
       do
       {
@@ -519,4 +532,38 @@ u32_t sys_now(void)
 {
   return HAL_GetTick();
 }
+
+/**
+  * @brief  RMII interface watchdog thread
+  * @param  argument
+  * @retval None
+  */
+void RMII_Thread( void const * argument )
+{
+  (void) argument; 
+  
+  for(;;)
+  {
+    /* some unicast good packets are received */
+    if(EthHandle.Instance->MMCRGUFCR > 0U)
+    {
+      /* RMII Init is OK: Delete the Thread */ 
+      osThreadTerminate(NULL);
+    }    
+    else if(EthHandle.Instance->MMCRFCECR > 10U) 
+    {
+      /* ETH received too many packets with CRC errors, resetting RMII */
+      SYSCFG->PMC &= ~SYSCFG_PMC_MII_RMII_SEL;
+      SYSCFG->PMC |= SYSCFG_PMC_MII_RMII_SEL;
+    
+      EthHandle.Instance->MMCCR |= ETH_MMCCR_CR;
+    }
+    else
+    {
+      /* Delay 200 ms */
+      osDelay(200);
+    }
+  }
+}
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

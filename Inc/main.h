@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics International N.V. 
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
@@ -53,8 +53,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
-#include "stm32746g_discovery.h"
-#include "stm32746g_discovery_lcd.h"
+#include "stm32f769i_discovery.h"
+#include "stm32f769i_discovery_lcd.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/ 
@@ -76,7 +76,7 @@
 #define GW_ADDR0   192
 #define GW_ADDR1   168
 #define GW_ADDR2   0
-#define GW_ADDR3   1 
+#define GW_ADDR3   1
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */  

@@ -3,7 +3,7 @@
 <project>
   <fileVersion>2</fileVersion>
   <configuration>
-    <name>STM32746G_DISCOVERY</name>
+    <name>STM32F769I_DISCOVERY</name>
     <toolchain>
       <name>ARM</name>
     </toolchain>
@@ -45,7 +45,7 @@
         </option>
         <option>
           <name>MemFile</name>
-          <state>$TOOLKIT_DIR$\CONFIG\debugger\ST\STM32F746NG.ddf</state>
+          <state>$TOOLKIT_DIR$\CONFIG\debugger\ST\STM32F77xxx.ddf</state>
         </option>
         <option>
           <name>RunToEnable</name>
@@ -117,7 +117,7 @@
         </option>
         <option>
           <name>FlashLoadersV3</name>
-          <state>$TOOLKIT_DIR$\config\flashloader\ST\FlashSTM32F756xG.board</state>
+          <state>$TOOLKIT_DIR$\config\flashloader\ST\FlashSTM32F77xx.board</state>
         </option>
         <option>
           <name>OCImagesSuppressCheck1</name>
@@ -922,7 +922,7 @@
         </option>
         <option>
           <name>CCSwoClockAuto</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCSwoClockEdit</name>
@@ -1159,7 +1159,7 @@
         <debug>1</debug>
         <option>
           <name>OCDriverInfo</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCSTLinkInterfaceRadio</name>
@@ -1180,7 +1180,7 @@
         </option>
         <option>
           <name>CCSwoClockAuto</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCSwoClockEdit</name>

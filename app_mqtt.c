@@ -34,8 +34,8 @@ static app_mqtt_state_t m_mqtt_state = APP_MQTT_DISCONNECTED;
 #define MQTT_TX_BUFFER_SIZE   (512)
 #define MQTT_AES_BUFFER_SIZE  (512)
 
-#define TOPIC_SUB_HEADER    "test"
-
+#define	TOPIC_PUB_HEADER	"fire/pub/"
+#define	TOPIC_SUB_HEADER	"fire/sub/"
 
 static char m_mqtt_pub_topic[MQTT_TOPIC_BUFF_LEN];
 static char m_mqtt_sub_topic[MQTT_TOPIC_BUFF_LEN];
@@ -142,12 +142,12 @@ static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t f
             {
                   /* Set command without encrypted */
                   // SET,10,(60)
-                  ProcessSetParameters((char*)data, PARAMETER_SET_FROM_SERVER);
+                //   ProcessSetParameters((char*)data, PARAMETER_SET_FROM_SERVER);
             }
             else if (strstr((char *)data, "GET,"))
             {
                   /* Get command without encrypted */
-                  ProcessGetParameters((char*)data, PARAMETER_SET_FROM_SERVER);
+                //   ProcessGetParameters((char*)data, PARAMETER_SET_FROM_SERVER);
             }
             else
             {
@@ -890,7 +890,7 @@ static int8_t mqtt_connect_broker(mqtt_client_t *client)
         DebugPrint("mqtt_connect return %d\r\n", err);
         if (err == ERR_ISCONN)
         {
-            DebugPrint("MQTT already connected\r\n", err);
+            DebugPrint("MQTT already connected\r\n");
         }
     }
     else
@@ -982,6 +982,7 @@ static void mqtt_client_thread(void *arg)
         static uint8_t mqttTick = 0;
         static uint32_t Ticks = 0, LastSendSubTime = 0;
         static uint32_t mqttLastActiveTime = 0;
+        
         for (;;)
         {   
             if (app_ethernet_dhcp_ready())

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics International N.V. 
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
   * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
@@ -54,6 +54,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "lwip/netif.h"
 #include <stdbool.h>
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* DHCP process states */
@@ -67,18 +68,12 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void User_notification(struct netif *netif);
+
+bool app_ethernet_dhcp_ready(void);
+
 #ifdef USE_DHCP
 void DHCP_thread(void const * argument);
-
-/**
- * @brief Get DHCP status
- * @retval TRUE DHCP ready
- *          FALSE DHCP not ready
- */
-bool app_ethernet_dhcp_ready(void);
 #endif
-
-
 
 #ifdef __cplusplus
 }

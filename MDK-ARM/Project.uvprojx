@@ -7,18 +7,18 @@
 
   <Targets>
     <Target>
-      <TargetName>STM32746G_DISCOVERY</TargetName>
+      <TargetName>STM32F769I_DISCOVERY</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STM32F746NGHx</Device>
+          <Device>STM32F769NIHx</Device>
           <Vendor>STMicroelectronics</Vendor>
           <PackID>Keil.STM32F7xx_DFP.2.12.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000-0x2004FFFF) IROM(0x8000000-0x80FFFFF) CLOCK(12000000) FPU3(SFPU) CPUTYPE("Cortex-M7") ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000-0x2007FFFF) IROM(0x8000000-0x81FFFFF) CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -33,7 +33,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:STM32F746NGHx$CMSIS\SVD\STM32F7x6.svd</SFDFile>
+          <SFDFile>$$Device:STM32F769NIHx$CMSIS\SVD\STM32F7x9.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -48,8 +48,8 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>STM32746G_DISCOVERY\</OutputDirectory>
-          <OutputName>STM32746G_DISCOVERY</OutputName>
+          <OutputDirectory>STM32F769I_DISCOVERY\</OutputDirectory>
+          <OutputName>STM32F769I_DISCOVERY</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -183,9 +183,8 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>2</RvdsVP>
+            <RvdsVP>3</RvdsVP>
             <RvdsMve>0</RvdsMve>
-            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -246,12 +245,12 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x50000</Size>
+                <Size>0x80000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x100000</Size>
+                <Size>0x200000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -276,7 +275,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x100000</Size>
+                <Size>0x200000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -301,7 +300,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x50000</Size>
+                <Size>0x80000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -337,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--C99</MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F746xx,USE_STM32746G_DISCOVERY,USE_FULL_ASSERT</Define>
+              <Define>USE_HAL_DRIVER,STM32F769xx,USE_STM32F769I_DISCO</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Src;../../../../../../Drivers/CMSIS/Device/ST/STM32F7xx/Include;../../../../../../Drivers/STM32F7xx_HAL_Driver/Inc;../../../../../../Drivers/BSP/STM32746G-Discovery;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components;../../../../../../Middlewares/Third_Party/LwIP/src/include/;../../../../../../Middlewares/Third_Party/LwIP/system;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/include;../../../../../../Utilities;../../../../../../Utilities/Log</IncludePath>
+              <IncludePath>../Inc;../Src;../../../../../../Drivers/CMSIS/Device/ST/STM32F7xx/Include;../../../../../../Drivers/STM32F7xx_HAL_Driver/Inc;../../../../../../Drivers/BSP/STM32F769I-Discovery;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components;../../../../../../Middlewares/Third_Party/LwIP/src/include/;../../../../../../Middlewares/Third_Party/LwIP/system;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/include;../../../../../../Utilities;../../../../../../Utilities/Log;..\..\LwIP_HTTP_Server_Socket_RTOS;..\..\LwIP_HTTP_Server_Netconn_RTOS;..\..\..\..\..\..\Middlewares\Third_Party\LwIP\src\apps\sntp;..\..\..\..\..\..\Middlewares\Third_Party\mbedTLS\include\mbedtls;..\..\..\..\..\..\Middlewares\Third_Party\mbedTLS\include;..\MDK-ARM</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -352,7 +351,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>4</ClangAsOpt>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -391,6 +390,51 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Middlewares/LwIP/Core/IPv4</GroupName>
+          <Files>
+            <File>
+              <FileName>igmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>dhcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>autoip.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c</FilePath>
+            </File>
+            <File>
+              <FileName>icmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>etharp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c</FilePath>
+            </File>
+            <File>
+              <FileName>ip4_addr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c</FilePath>
+            </File>
+            <File>
+              <FileName>ip4_frag.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c</FilePath>
+            </File>
+            <File>
+              <FileName>ip4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Doc</GroupName>
           <Files>
             <File>
@@ -401,67 +445,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/LwIP/Api</GroupName>
+          <GroupName>Drivers/BSP/Component</GroupName>
           <Files>
             <File>
-              <FileName>err.c</FileName>
+              <FileName>otm8009a.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/err.c</FilePath>
-            </File>
-            <File>
-              <FileName>netbuf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/netbuf.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_lib.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/api_lib.c</FilePath>
-            </File>
-            <File>
-              <FileName>tcpip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/tcpip.c</FilePath>
-            </File>
-            <File>
-              <FileName>netdb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/netdb.c</FilePath>
-            </File>
-            <File>
-              <FileName>netifapi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/netifapi.c</FilePath>
-            </File>
-            <File>
-              <FileName>sockets.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/sockets.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_msg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/api_msg.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Drivers/BSP/STM32746G_Discovery</GroupName>
-          <Files>
-            <File>
-              <FileName>stm32746g_discovery.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32746g_discovery_sdram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32746g_discovery_lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.c</FilePath>
+              <FilePath>../../../../../../Drivers/BSP/Components/otm8009a/otm8009a.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -469,39 +458,9 @@
           <GroupName>Drivers/STM32F7xx_HAL_Driver</GroupName>
           <Files>
             <File>
-              <FileName>stm32f7xx_hal_gpio.c</FileName>
+              <FileName>stm32f7xx_hal_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_rcc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_eth.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c</FilePath>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f7xx_ll_fmc.c</FileName>
@@ -509,19 +468,14 @@
               <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_fmc.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f7xx_hal_flash.c</FileName>
+              <FileName>stm32f7xx_hal_ltdc_ex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c</FilePath>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f7xx_hal_dma2d.c</FileName>
+              <FileName>stm32f7xx_hal_eth.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma2d.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_i2c_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c</FilePath>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.c</FilePath>
             </File>
             <File>
               <FileName>stm32f7xx_hal_pwr.c</FileName>
@@ -529,19 +483,9 @@
               <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f7xx_hal_dma.c</FileName>
+              <FileName>stm32f7xx_hal_pwr_ex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_sdram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sdram.c</FilePath>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32f7xx_hal_ltdc.c</FileName>
@@ -549,14 +493,9 @@
               <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f7xx_hal_cortex.c</FileName>
+              <FileName>stm32f7xx_hal_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c</FilePath>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c</FilePath>
             </File>
             <File>
               <FileName>stm32f7xx_hal_flash_ex.c</FileName>
@@ -564,114 +503,104 @@
               <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f7xx_hal_pwr_ex.c</FileName>
+              <FileName>stm32f7xx_hal_i2c_ex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c</FilePath>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sdram.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_dsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dsi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_cortex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_dma2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma2d.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f7xx_hal_rcc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/LwIP/Core</GroupName>
+          <GroupName>Application/User</GroupName>
           <Files>
             <File>
-              <FileName>timeouts.c</FileName>
+              <FileName>stm32f7xx_it.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/timeouts.c</FilePath>
+              <FilePath>../Src/stm32f7xx_it.c</FilePath>
             </File>
             <File>
-              <FileName>udp.c</FileName>
+              <FileName>app_ethernet.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/udp.c</FilePath>
+              <FilePath>../Src/app_ethernet.c</FilePath>
             </File>
             <File>
-              <FileName>ip.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ip.c</FilePath>
+              <FilePath>../Src/main.c</FilePath>
             </File>
             <File>
-              <FileName>dns.c</FileName>
+              <FileName>httpserver-netconn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/dns.c</FilePath>
+              <FilePath>../Src/httpserver-netconn.c</FilePath>
             </File>
             <File>
-              <FileName>def.c</FileName>
+              <FileName>stm32f7xx_hal_timebase_tim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/def.c</FilePath>
+              <FilePath>../Src/stm32f7xx_hal_timebase_tim.c</FilePath>
             </File>
             <File>
-              <FileName>raw.c</FileName>
+              <FileName>ethernetif.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/raw.c</FilePath>
-            </File>
-            <File>
-              <FileName>stats.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/stats.c</FilePath>
-            </File>
-            <File>
-              <FileName>memp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/memp.c</FilePath>
-            </File>
-            <File>
-              <FileName>init.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/init.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/sys.c</FilePath>
-            </File>
-            <File>
-              <FileName>pbuf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/pbuf.c</FilePath>
-            </File>
-            <File>
-              <FileName>netif.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/netif.c</FilePath>
-            </File>
-            <File>
-              <FileName>tcp_out.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/tcp_out.c</FilePath>
-            </File>
-            <File>
-              <FileName>tcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/tcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>inet_chksum.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/inet_chksum.c</FilePath>
-            </File>
-            <File>
-              <FileName>tcp_in.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/tcp_in.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Middlewares/LwIP/apps/http</GroupName>
-          <Files>
-            <File>
-              <FileName>httpd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/apps/http/httpd.c</FilePath>
-            </File>
-            <File>
-              <FileName>fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/apps/http/fs.c</FilePath>
+              <FilePath>../Src/ethernetif.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -684,44 +613,184 @@
               <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1/port.c</FilePath>
             </File>
             <File>
-              <FileName>heap_4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</FilePath>
-            </File>
-            <File>
               <FileName>cmsis_os.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</FilePath>
             </File>
+            <File>
+              <FileName>heap_4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/FreeRTOS</GroupName>
+          <GroupName>Middlewares/LwIP/Core</GroupName>
           <Files>
             <File>
-              <FileName>timers.c</FileName>
+              <FileName>tcp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/timers.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/tcp.c</FilePath>
             </File>
             <File>
-              <FileName>croutine.c</FileName>
+              <FileName>timeouts.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/croutine.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/timeouts.c</FilePath>
             </File>
             <File>
-              <FileName>queue.c</FileName>
+              <FileName>tcp_in.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/queue.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/tcp_in.c</FilePath>
             </File>
             <File>
-              <FileName>tasks.c</FileName>
+              <FileName>stats.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/tasks.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/stats.c</FilePath>
             </File>
             <File>
-              <FileName>list.c</FileName>
+              <FileName>ip.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/list.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ip.c</FilePath>
+            </File>
+            <File>
+              <FileName>raw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/raw.c</FilePath>
+            </File>
+            <File>
+              <FileName>mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>netif.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/netif.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/sys.c</FilePath>
+            </File>
+            <File>
+              <FileName>init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/init.c</FilePath>
+            </File>
+            <File>
+              <FileName>tcp_out.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/tcp_out.c</FilePath>
+            </File>
+            <File>
+              <FileName>dns.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/dns.c</FilePath>
+            </File>
+            <File>
+              <FileName>memp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/memp.c</FilePath>
+            </File>
+            <File>
+              <FileName>def.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/def.c</FilePath>
+            </File>
+            <File>
+              <FileName>udp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/udp.c</FilePath>
+            </File>
+            <File>
+              <FileName>inet_chksum.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/inet_chksum.c</FilePath>
+            </File>
+            <File>
+              <FileName>pbuf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/pbuf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/LwIP/Api</GroupName>
+          <Files>
+            <File>
+              <FileName>api_msg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/api_msg.c</FilePath>
+            </File>
+            <File>
+              <FileName>netbuf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/netbuf.c</FilePath>
+            </File>
+            <File>
+              <FileName>netdb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/netdb.c</FilePath>
+            </File>
+            <File>
+              <FileName>sockets.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/sockets.c</FilePath>
+            </File>
+            <File>
+              <FileName>api_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/api_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>err.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/err.c</FilePath>
+            </File>
+            <File>
+              <FileName>tcpip.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/tcpip.c</FilePath>
+            </File>
+            <File>
+              <FileName>netifapi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/api/netifapi.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Drivers/BSP/STM32F769I_Discovery</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32f769i_discovery.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f769i_discovery_lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f769i_discovery_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_sdram.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/LwIP/apps/http</GroupName>
+          <Files>
+            <File>
+              <FileName>fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/apps/http/fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>httpd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/apps/http/httpd.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -744,9 +813,9 @@
           <GroupName>Application/MDK-ARM</GroupName>
           <Files>
             <File>
-              <FileName>startup_stm32f746xx.s</FileName>
+              <FileName>startup_stm32f769xx.s</FileName>
               <FileType>2</FileType>
-              <FilePath>startup_stm32f746xx.s</FilePath>
+              <FilePath>startup_stm32f769xx.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -761,82 +830,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/LwIP/Core/IPv4</GroupName>
+          <GroupName>Middlewares/FreeRTOS</GroupName>
           <Files>
             <File>
-              <FileName>etharp.c</FileName>
+              <FileName>tasks.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/etharp.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/tasks.c</FilePath>
             </File>
             <File>
-              <FileName>icmp.c</FileName>
+              <FileName>list.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/icmp.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/list.c</FilePath>
             </File>
             <File>
-              <FileName>autoip.c</FileName>
+              <FileName>queue.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/autoip.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/queue.c</FilePath>
             </File>
             <File>
-              <FileName>ip4.c</FileName>
+              <FileName>timers.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/timers.c</FilePath>
             </File>
             <File>
-              <FileName>ip4_addr.c</FileName>
+              <FileName>croutine.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip4_frag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_frag.c</FilePath>
-            </File>
-            <File>
-              <FileName>igmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/igmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>dhcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Middlewares/Third_Party/LwIP/src/core/ipv4/dhcp.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Application/User</GroupName>
-          <Files>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/main.c</FilePath>
-            </File>
-            <File>
-              <FileName>httpserver-netconn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/httpserver-netconn.c</FilePath>
-            </File>
-            <File>
-              <FileName>ethernetif.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/ethernetif.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_hal_timebase_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/stm32f7xx_hal_timebase_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_ethernet.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/app_ethernet.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f7xx_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/stm32f7xx_it.c</FilePath>
+              <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/croutine.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -844,19 +863,24 @@
           <GroupName>app_mqtt</GroupName>
           <Files>
             <File>
-              <FileName>app_mqtt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\app_mqtt.c</FilePath>
-            </File>
-            <File>
               <FileName>app_mqtt.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Inc\app_mqtt.h</FilePath>
+              <FilePath>..\app_mqtt.h</FilePath>
+            </File>
+            <File>
+              <FileName>app_debug.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\app_debug.h</FilePath>
+            </File>
+            <File>
+              <FileName>app_mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app_mqtt.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>Middlewares/LwIP/apps/mqtt</GroupName>
+          <GroupName>Middlewares/LwIP/App</GroupName>
           <Files>
             <File>
               <FileName>mqtt.c</FileName>
@@ -883,26 +907,11 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="CMSIS Core">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
         <targetInfos>
-          <targetInfo name="STM32746G_DISCOVERY"/>
+          <targetInfo name="STM32F769I_DISCOVERY"/>
         </targetInfos>
       </component>
     </components>
     <files/>
   </RTE>
-
-  <LayerInfo>
-    <Layers>
-      <Layer>
-        <LayName>&lt;Project Info&gt;</LayName>
-        <LayDesc></LayDesc>
-        <LayUrl></LayUrl>
-        <LayKeys></LayKeys>
-        <LayCat></LayCat>
-        <LayLic></LayLic>
-        <LayTarg>0</LayTarg>
-        <LayPrjMark>1</LayPrjMark>
-      </Layer>
-    </Layers>
-  </LayerInfo>
 
 </Project>

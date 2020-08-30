@@ -1,7 +1,7 @@
-;******************** (C) COPYRIGHT 2016 STMicroelectronics ********************
-;* File Name          : startup_stm32f746xx.s
+;/******************** (C) COPYRIGHT 2017 STMicroelectronics ********************
+;* File Name          : startup_stm32f769xx.s
 ;* Author             : MCD Application Team
-;* Description        : STM32F746xx devices vector table for EWARM toolchain.
+;* Description        : STM32F769xx devices vector table for EWARM toolchain.
 ;*                      This module performs:
 ;*                      - Set the initial SP
 ;*                      - Set the initial PC == _iar_program_start,
@@ -164,7 +164,7 @@ __vector_table
         DCD     OTG_HS_WKUP_IRQHandler            ; USB OTG HS Wakeup through EXTI                         
         DCD     OTG_HS_IRQHandler                 ; USB OTG HS                                      
         DCD     DCMI_IRQHandler                   ; DCMI                                            
-        DCD     0                                 ; Reserved                                    
+        DCD     0                                 ; Reserved                                     
         DCD     RNG_IRQHandler                    ; Rng
         DCD     FPU_IRQHandler                    ; FPU
         DCD     UART7_IRQHandler                  ; UART7
@@ -183,6 +183,18 @@ __vector_table
         DCD     I2C4_EV_IRQHandler                ; I2C4 Event                                             
         DCD     I2C4_ER_IRQHandler                ; I2C4 Error 
         DCD     SPDIF_RX_IRQHandler               ; SPDIF_RX
+        DCD     DSI_IRQHandler                    ; DSI
+        DCD     DFSDM1_FLT0_IRQHandler            ; DFSDM1 Filter 0 global Interrupt
+        DCD     DFSDM1_FLT1_IRQHandler            ; DFSDM1 Filter 1 global Interrupt
+        DCD     DFSDM1_FLT2_IRQHandler            ; DFSDM1 Filter 2 global Interrupt
+        DCD     DFSDM1_FLT3_IRQHandler            ; DFSDM1 Filter 3 global Interrupt
+        DCD     SDMMC2_IRQHandler                 ; SDMMC2   
+        DCD     CAN3_TX_IRQHandler                ; CAN3 TX                                                
+        DCD     CAN3_RX0_IRQHandler               ; CAN3 RX0                                               
+        DCD     CAN3_RX1_IRQHandler               ; CAN3 RX1                                               
+        DCD     CAN3_SCE_IRQHandler               ; CAN3 SCE 
+        DCD     JPEG_IRQHandler                   ; JPEG
+        DCD     MDIOS_IRQHandler                  ; MDIOS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Default interrupt handlers.
@@ -725,6 +737,66 @@ I2C4_ER_IRQHandler
         PUBWEAK SPDIF_RX_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1) 
 SPDIF_RX_IRQHandler 
-        B SPDIF_RX_IRQHandler 
+        B SPDIF_RX_IRQHandler
+
+        PUBWEAK DSI_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+DSI_IRQHandler 
+        B DSI_IRQHandler
+		
+        PUBWEAK DFSDM1_FLT0_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+DFSDM1_FLT0_IRQHandler 
+        B DFSDM1_FLT0_IRQHandler
+
+        PUBWEAK DFSDM1_FLT1_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+DFSDM1_FLT1_IRQHandler 
+        B DFSDM1_FLT1_IRQHandler
+
+        PUBWEAK DFSDM1_FLT2_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+DFSDM1_FLT2_IRQHandler 
+        B DFSDM1_FLT2_IRQHandler
+
+        PUBWEAK DFSDM1_FLT3_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+DFSDM1_FLT3_IRQHandler 
+        B DFSDM1_FLT3_IRQHandler
+
+        PUBWEAK SDMMC2_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+SDMMC2_IRQHandler 
+        B SDMMC2_IRQHandler
+
+        PUBWEAK CAN3_TX_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+CAN3_TX_IRQHandler 
+        B CAN3_TX_IRQHandler
+
+        PUBWEAK CAN3_RX0_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+CAN3_RX0_IRQHandler 
+        B CAN3_RX0_IRQHandler
+
+        PUBWEAK CAN3_RX1_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+CAN3_RX1_IRQHandler 
+        B CAN3_RX1_IRQHandler
+
+        PUBWEAK CAN3_SCE_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+CAN3_SCE_IRQHandler 
+        B CAN3_SCE_IRQHandler
+
+        PUBWEAK JPEG_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+JPEG_IRQHandler 
+        B JPEG_IRQHandler
+
+        PUBWEAK MDIOS_IRQHandler
+        SECTION .text:CODE:NOROOT:REORDER(1) 
+MDIOS_IRQHandler 
+        B MDIOS_IRQHandler			
         END
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

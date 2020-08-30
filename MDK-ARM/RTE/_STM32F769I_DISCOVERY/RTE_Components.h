@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'Project' 
- * Target:  'STM32746G_DISCOVERY' 
+ * Target:  'STM32F769I_DISCOVERY' 
  */
 
 #ifndef RTE_COMPONENTS_H
