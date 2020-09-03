@@ -56,7 +56,7 @@
 #include "lcd_log.h"
 #include "app_mqtt.h"
 #include "sntp.h"
-
+#include "app_debug.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -74,11 +74,44 @@ static void Error_Handler(void);
 
 /* Private functions ---------------------------------------------------------*/
 
+/* RNG init function */
+static void RNG_Init(void);
+
 static void initialize_sntp(void)
 {
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
-    sntp_setservername(0, "pool.ntp.org");
+//    sntp_setservername(0, "pool.ntp.org");
     sntp_init();
+}
+RNG_HandleTypeDef RngHandle;
+
+/**
+  * @brief RNG MSP Initialization
+  *        This function configures the hardware resources used in this example:
+  *           - Peripheral's clock enable
+  * @param hrng: RNG handle pointer
+  * @retval None
+  */
+void HAL_RNG_MspInit(RNG_HandleTypeDef *hrng)
+{
+  /* RNG Peripheral clock enable */
+  __HAL_RCC_RNG_CLK_ENABLE();
+}
+
+/**
+  * @brief RNG MSP De-Initialization
+  *        This function freeze the hardware resources used in this example:
+  *          - Disable the Peripheral's clock
+  * @param hrng: RNG handle pointer
+  * @retval None
+  */
+void HAL_RNG_MspDeInit(RNG_HandleTypeDef *hrng)
+{
+  /* Enable RNG reset state */
+  __HAL_RCC_RNG_FORCE_RESET();
+
+  /* Release RNG from reset state */
+  __HAL_RCC_RNG_RELEASE_RESET();
 }
 
 /**
@@ -88,6 +121,8 @@ static void initialize_sntp(void)
   */
 int main(void)
 {
+    extern uint32_t uwTickPrio;
+    uwTickPrio = TICK_INT_PRIORITY;
   /* Configure the MPU attributes as Device memory for ETH DMA descriptors */
   MPU_Config();
 
@@ -105,6 +140,7 @@ int main(void)
   /* Configure the system clock to 200 MHz */
   SystemClock_Config();
   
+  RNG_Init();
   /* Init thread */
 #if defined(__GNUC__)
   osThreadDef(Start, StartThread, osPriorityNormal, 0, configMINIMAL_STACK_SIZE * 5);
@@ -371,6 +407,25 @@ static void CPU_CACHE_Enable(void)
   SCB_EnableDCache();
 }
 
+/* RNG init function */
+static void RNG_Init(void)
+{
+  RngHandle.Instance = RNG;
+ /* DeInitialize the RNG peripheral */
+  if (HAL_RNG_DeInit(&RngHandle) != HAL_OK)
+  {
+    /* DeInitialization Error */
+    Error_Handler();
+  }
+
+  /* Initialize the RNG peripheral */
+  if (HAL_RNG_Init(&RngHandle) != HAL_OK)
+  {
+    /* Initialization Error */
+    Error_Handler();
+  }
+}
+
 #ifdef  USE_FULL_ASSERT
 
 /**
@@ -386,11 +441,45 @@ void assert_failed(uint8_t* file, uint32_t line)
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
   /* Infinite loop */
+    __disable_irq();
+    __asm("BKPT #0");
   while (1)
   {
   }
 }
 #endif
+
+__NO_RETURN void exit(int err)
+{
+    if (err)
+    {
+        DebugPrint("Exit error %d\r\n", err);
+        assert_failed(__FILE__, __LINE__);
+    }
+    while(1);
+}
+
+void *pvWrap_mbedtls_calloc( size_t sNb, size_t sSize )
+{
+    void *vPtr = NULL;
+    if (sSize > 0) {
+        vPtr = pvPortMalloc(sSize * sNb); // Call FreeRTOS or other standard API
+        if(vPtr)
+           memset(vPtr, 0, (sSize * sNb)); // Must required
+    }
+    if (vPtr == NULL)
+    {
+        assert_failed(__FILE__, __LINE__);
+    }
+    return vPtr;
+}
+
+void vWrap_mbedtls_free( void *vPtr )
+{
+    if (vPtr) {
+        vPortFree(vPtr); // Call FreeRTOS or other standard API
+    }
+}
 
 /**
   * @}

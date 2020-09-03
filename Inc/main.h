@@ -82,6 +82,10 @@
 /* Exported functions ------------------------------------------------------- */  
 
 
+void *pvWrap_mbedtls_calloc( size_t sNb, size_t sSize );
+
+void vWrap_mbedtls_free( void *vPtr );
+    
 #ifdef __cplusplus
 }
 #endif
