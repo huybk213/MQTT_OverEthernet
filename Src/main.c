@@ -187,6 +187,13 @@ static void StartThread(void const * argument)
   
   /* Initialize the LwIP stack */
   DebugPrint("Initialize the LwIP stack\r\n");
+  // Get mac address base on STM32 unique id, STM32F7 Base address: 0x1FF0F420
+    
+  uint8_t mac[6];
+  memcpy(mac, (uint8_t*)0x1FF0F420, 4);
+  memcpy(mac+5, (uint8_t*)0x1FF0F424, 2);
+    
+  ethernetif_set_mac_addr(mac);
   netif_start(false);
     
   DebugPrint("Initialize MQTT client\r\n");

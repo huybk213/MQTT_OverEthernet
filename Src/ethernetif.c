@@ -187,6 +187,14 @@ void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef *heth)
   osSemaphoreRelease(s_xSemaphore);
 }
 
+static uint8_t ethernet_mac[6];
+void ethernetif_set_mac_addr(uint8_t *mac)
+{
+    memcpy(ethernet_mac, mac, 6);
+    DebugPrint("HW mac addr %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+                mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+}
+
 /*******************************************************************************
                        LL Driver Interface ( LwIP stack --> ETH) 
 *******************************************************************************/
@@ -228,13 +236,21 @@ static void low_level_init(struct netif *netif)
   netif->hwaddr_len = ETHARP_HWADDR_LEN;
 
   /* set netif MAC hardware address */
-  netif->hwaddr[0] =  MAC_ADDR0;
-  netif->hwaddr[1] =  MAC_ADDR1;
-  netif->hwaddr[2] =  MAC_ADDR2;
-  netif->hwaddr[3] =  MAC_ADDR3;
-  netif->hwaddr[4] =  MAC_ADDR4;
-  netif->hwaddr[5] =  MAC_ADDR5;
-
+#if 0
+  netif->hwaddr[0] =  ethernet_mac[0];
+  netif->hwaddr[1] =  ethernet_mac[1];
+  netif->hwaddr[2] =  ethernet_mac[2];
+  netif->hwaddr[3] =  ethernet_mac[3];
+  netif->hwaddr[4] =  ethernet_mac[4];
+  netif->hwaddr[5] =  ethernet_mac[5];
+#else
+  netif->hwaddr[0] =  MAC_ADDR0; 
+  netif->hwaddr[1] =  MAC_ADDR1; 
+  netif->hwaddr[2] =  MAC_ADDR2; 
+  netif->hwaddr[3] =  MAC_ADDR3; 
+  netif->hwaddr[4] =  MAC_ADDR4; 
+  netif->hwaddr[5] =  MAC_ADDR5; 
+#endif
   /* set netif maximum transfer unit */
   netif->mtu = 1500;
 
