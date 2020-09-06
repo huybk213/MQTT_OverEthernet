@@ -58,3 +58,5 @@ MDK-ARM/Project.uvguix.HuyTV
 MDK-ARM/JLinkSettings.ini
 
 MDK-ARM/JLinkLog.txt
+
+*.TMP

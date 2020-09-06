@@ -117,8 +117,8 @@ void HAL_RNG_MspDeInit(RNG_HandleTypeDef *hrng)
   */
 int main(void)
 {
-    extern uint32_t uwTickPrio;
-    uwTickPrio = TICK_INT_PRIORITY;
+  extern uint32_t uwTickPrio;
+  uwTickPrio = TICK_INT_PRIORITY;
   /* Configure the MPU attributes as Device memory for ETH DMA descriptors */
   MPU_Config();
 
@@ -138,6 +138,14 @@ int main(void)
   
   DebugPrint("Build %s\r\n", __DATE__);
   RNG_Init();
+  
+  uint8_t mac[6];
+  memcpy(mac, (uint8_t*)0x1FF0F420, 4);
+  memcpy(&mac[4], (uint8_t*)0x1FF0F424, 2);
+    
+  ethernetif_set_mac_addr(mac);
+  
+  
   /* Init thread */
 #if defined(__GNUC__)
   osThreadDef(Start, StartThread, osPriorityNormal, 0, configMINIMAL_STACK_SIZE * 5);
@@ -188,12 +196,7 @@ static void StartThread(void const * argument)
   /* Initialize the LwIP stack */
   DebugPrint("Initialize the LwIP stack\r\n");
   // Get mac address base on STM32 unique id, STM32F7 Base address: 0x1FF0F420
-    
-  uint8_t mac[6];
-  memcpy(mac, (uint8_t*)0x1FF0F420, 4);
-  memcpy(mac+5, (uint8_t*)0x1FF0F424, 2);
-    
-  ethernetif_set_mac_addr(mac);
+  
   netif_start(false);
     
   DebugPrint("Initialize MQTT client\r\n");
