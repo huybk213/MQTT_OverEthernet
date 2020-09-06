@@ -26,6 +26,7 @@
 #include "mbedtls/debug.h"
 #include "FreeRTOS.h"
 #include "event_groups.h"
+#include "aws_certificate.h"
 
 #define MQTT_CLIENT_THREAD_PRIO    osPriorityAboveNormal
 #define MQTT_CLIENT_SUB_QOS        1
@@ -60,79 +61,7 @@ static uint8_t m_DNS_resolved = 0;
 char m_mqtt_tx_buffer[MQTT_TX_BUFFER_SIZE];
 
 static uint32_t m_sub_req_err_count;
-const char * m_mqtt_broker = "a2fpu8zc49udz1-ats.iot.ap-southeast-1.amazonaws.com";
-const uint16_t m_mqtt_port = 8883;
-static bool m_tls_init = false;
-
-static const char * root_ca = "-----BEGIN CERTIFICATE-----\n\
-MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF\n\
-ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6\n\
-b24gUm9vdCBDQSAxMB4XDTE1MDUyNjAwMDAwMFoXDTM4MDExNzAwMDAwMFowOTEL\n\
-MAkGA1UEBhMCVVMxDzANBgNVBAoTBkFtYXpvbjEZMBcGA1UEAxMQQW1hem9uIFJv\n\
-b3QgQ0EgMTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALJ4gHHKeNXj\n\
-ca9HgFB0fW7Y14h29Jlo91ghYPl0hAEvrAIthtOgQ3pOsqTQNroBvo3bSMgHFzZM\n\
-9O6II8c+6zf1tRn4SWiw3te5djgdYZ6k/oI2peVKVuRF4fn9tBb6dNqcmzU5L/qw\n\
-IFAGbHrQgLKm+a/sRxmPUDgH3KKHOVj4utWp+UhnMJbulHheb4mjUcAwhmahRWa6\n\
-VOujw5H5SNz/0egwLX0tdHA114gk957EWW67c4cX8jJGKLhD+rcdqsq08p8kDi1L\n\
-93FcXmn/6pUCyziKrlA4b9v7LWIbxcceVOF34GfID5yHI9Y/QCB/IIDEgEw+OyQm\n\
-jgSubJrIqg0CAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMC\n\
-AYYwHQYDVR0OBBYEFIQYzIU07LwMlJQuCFmcx7IQTgoIMA0GCSqGSIb3DQEBCwUA\n\
-A4IBAQCY8jdaQZChGsV2USggNiMOruYou6r4lK5IpDB/G/wkjUu0yKGX9rbxenDI\n\
-U5PMCCjjmCXPI6T53iHTfIUJrU6adTrCC2qJeHZERxhlbI1Bjjt/msv0tadQ1wUs\n\
-N+gDS63pYaACbvXy8MWy7Vu33PqUXHeeE6V/Uq2V8viTO96LXFvKWlJbYK8U90vv\n\
-o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU\n\
-5MsI+yMRQ+hDKXJioaldXgjUkK642M4UwtBV8ob2xJNDd2ZhwLnoQdeXeGADbkpy\n\
-rqXRfboQnoZsG4q5WTP468SQvvG5\n\
------END CERTIFICATE-----";
-
-static const char * client_key = "-----BEGIN CERTIFICATE-----\n\
-MIIDWjCCAkKgAwIBAgIVAIbb/R9GqyZ2cDjeZaqifS9zRGXjMA0GCSqGSIb3DQEB\n\
-CwUAME0xSzBJBgNVBAsMQkFtYXpvbiBXZWIgU2VydmljZXMgTz1BbWF6b24uY29t\n\
-IEluYy4gTD1TZWF0dGxlIFNUPVdhc2hpbmd0b24gQz1VUzAeFw0yMDA3MDcwNDU2\n\
-MjlaFw00OTEyMzEyMzU5NTlaMB4xHDAaBgNVBAMME0FXUyBJb1QgQ2VydGlmaWNh\n\
-dGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9HZKJTXMYH66JFwer\n\
-b1LeoyJK7D0hQUG6ioDqHaCpwuAXPB+styW3kUzxp5TfE7ut1MqwRoylXGo0/qzf\n\
-mL08AMGACmXa/WsbU2nhNKH/q9MbluNLT/k8TbvkhBJ4JslXXgtIyP/QOaUHh8aj\n\
-EH8P8JJwcFg9dSxVzxb+OgzyRciqexQ/Dga/yq2u91Ie/QUdknynk1PdStewPnMM\n\
-HHPZO+JFJxA4wAZ7G7ZY0NZY3i/aiJF0TgSbyIML2118mjVh0GGnEeFxQuN5vP2E\n\
-mqelgZ2dj1CMxjIb0SuLR1zVkCxt4EGjWdJQXbkoRtTO582dX+sFJt1J2/zzpRIb\n\
-bn99AgMBAAGjYDBeMB8GA1UdIwQYMBaAFFJEaISt+QJLn05x8h7kXmC5WaQpMB0G\n\
-A1UdDgQWBBTDbhvXhcvLAL4IF3VFplJmYp6oAjAMBgNVHRMBAf8EAjAAMA4GA1Ud\n\
-DwEB/wQEAwIHgDANBgkqhkiG9w0BAQsFAAOCAQEAkoyQM99ZVZKkgkzQN5pii64M\n\
-2yZpWt2fWjpe6iyX5ljzCEi7WdX0un0bzTjPw/GKLSiBnQXnpNnKQfvdvxmHP8A+\n\
-O4ecT5o+xuMxKlqHdnd1TR3vbvr+kdc82CMnIwL7FopGN6D6uWrDDtwL2H1bhx+B\n\
-bGhXYcZjXAIzkKJcc/nTcn4kgZKUvT0TEE2HT6F/nw4IBstWuStq+mSszQZf5uMy\n\
-zsW6qalZUWZf+BuAErKTw57UVFsJQG5IncSDWaObn70GCkrLNIHBrpPNIF5UO8Jt\n\
-7oFF/5CFcihDKxuueTjBeaOlmnhXy951sQSG3tBo8SyxrM09IMK4krTUHVV/aQ==\n\
------END CERTIFICATE-----";
-
-static const char * private_key = "-----BEGIN RSA PRIVATE KEY-----\n\
-MIIEpAIBAAKCAQEAvR2SiU1zGB+uiRcHq29S3qMiSuw9IUFBuoqA6h2gqcLgFzwf\n\
-rLclt5FM8aeU3xO7rdTKsEaMpVxqNP6s35i9PADBgApl2v1rG1Np4TSh/6vTG5bj\n\
-S0/5PE275IQSeCbJV14LSMj/0DmlB4fGoxB/D/CScHBYPXUsVc8W/joM8kXIqnsU\n\
-Pw4Gv8qtrvdSHv0FHZJ8p5NT3UrXsD5zDBxz2TviRScQOMAGexu2WNDWWN4v2oiR\n\
-dE4Em8iDC9tdfJo1YdBhpxHhcULjebz9hJqnpYGdnY9QjMYyG9Eri0dc1ZAsbeBB\n\
-o1nSUF25KEbUzufNnV/rBSbdSdv886USG25/fQIDAQABAoIBAHO5rPooUs3oVT2+\n\
-wgq+TM/AtDN07NN0w2wLZWfeSXqYrdiKCjf+uy3h1FvsWMVJpgdxt7a29Uobi0Jy\n\
-tgb9yI73R3G66yle+jP2j0wokRmLY9v2MZDcl3+3ccscptCvq3WzLuSTWzdojvxU\n\
-sdEHPznZ1ULI/LZfBYpc940KqPF3hM5Y+ruc/ETdRtX4ekfdzt6FObv6wbphNMRG\n\
-vW0UkNq52TclCIYij+W+hiaM3ZEv+/CcJZJDgp+sBLC8nSs+iuaygeQ+iaMJJmKd\n\
-wMjod+0Nfc7qfcrJYkMwhWKLG22HqXUhmwDGQxtxTI37XIPwcWyPKPu++O5bzw7W\n\
-aYwb5QECgYEA6gk52FqDaqPJFh3zstVw15DshFHus7BIcVQ1JP8D3Q9eAnxH7HDL\n\
-HAAd8/heg4F2cyh5uRzEyrVPGLtPsddFzH7fK9P4aGbzzgb44D1FepyUw/NLM0zc\n\
-+cTM5tttjrXZvzzqbcW8UvL6SDeQbm2N1fZ5+Qnaw3qyGeV07KztY7UCgYEAzt0e\n\
-p5Bvfm1y1eYYthy1wTVMFxG+/bK8V0+NthoN7dzYsPMdi8joQ4orFQWuTSJjNd/Q\n\
-TKHU+o5+foHEHPcDeuE49LjMEYRXgDSxZu0WxDWtM8VHWj3FfepT7fSId9DyfPC/\n\
-zDC+nYjenYbMs0q/gYBjymLPka5ZI/78drbvGakCgYBlDqTOuo7inmS3SymvACFg\n\
-w/CNVn+3UZiGbzEfj4qQixEyC45XF4FsztQgRBAzwtRt931QJI8JZO8Jo+BOz8ER\n\
-A3vEhhxOoJ4ISdRvp6V3w2MtlcHUHg2RQJyl1vxg0j97J4em7Opb+xV915hjRqUn\n\
-Te3vToULQdDkA8PQav96vQKBgQCVUMRUvQvNXSEbxjemE/kZmefvau7KXt5Vw2WN\n\
-wSa2v8dlikaUZJNKVQwd43jZ0m18MK5A8jsyE/K4S+CL67yGUNV0x4L9TeJ+9wnq\n\
-Ok5JmFkJ2mdTeuz3o1Grm+t5WMf/aSN4NuMQAQB3Ahr1e4nZ5xugtUwQYqGTOvVu\n\
-l0Lk6QKBgQC2fJhM8deM1WLkMgVH+dSUB8J1lRCH48eys/nVE1DASl97xomV8zAa\n\
-QWxXz9GeUY1+ExQNFqC/u294hIg6IY9aKktToraKk5tmyAaRQhqSl7CABzlQgWlQ\n\
-jvRIj29HDnkQw0poT/1/1ePSL6xHkVWMwqraffRmLayFCfxVFxAwbQ==\n\
------END RSA PRIVATE KEY-----";
+static bool m_mqtt_tls_init = false;
 
 //TLS
 static mbedtls_entropy_context entropy;
@@ -189,16 +118,16 @@ static int mqtt_tls_verify(void *data, mbedtls_x509_crt *crt, int depth, int *fl
 }
 #endif
 
-void MQTT_TlsClose(void) 
+static void mqtt_tls_close(void) 
 { /* called from mqtt.c */
     /*! \todo This should be in a separate module */
-    mbedtls_ssl_free( &ssl );
-    mbedtls_ssl_config_free( &conf );
-    mbedtls_ctr_drbg_free( &ctr_drbg );
-    mbedtls_entropy_free( &entropy );
+    mbedtls_ssl_free(&ssl);
+    mbedtls_ssl_config_free(&conf);
+    mbedtls_ctr_drbg_free(&ctr_drbg );
+    mbedtls_entropy_free(&entropy);
 }
 
-static int TLS_Init(void) 
+static int mqtt_tls_init(void) 
 {
     DebugPrint("TLS initialize\r\n");
 
@@ -241,7 +170,9 @@ static int TLS_Init(void)
   
   /* The authentication mode determines how strict the certificates that are presented are checked.  */
 #if 1 // CONFIG_USE_SERVER_VERIFICATION
-    ret = mbedtls_x509_crt_parse(&x509_root_ca, (const unsigned char *)root_ca, strlen(root_ca)+1);
+    ret = mbedtls_x509_crt_parse(&x509_root_ca, 
+                                aws_certificate_get_root_ca(), 
+                                strlen(aws_certificate_get_root_ca()) + 1);
     if (ret != 0)
     {
         DebugPrint("Parse root ca error -0x%08X\r\n", ret);
@@ -249,7 +180,9 @@ static int TLS_Init(void)
         return -1;
     }
     
-    ret = mbedtls_x509_crt_parse(&x509_client_key, (const unsigned char *)client_key, strlen(client_key)+1);
+    ret = mbedtls_x509_crt_parse(&x509_client_key, 
+                                aws_certificate_get_client_cert(), 
+                                strlen(aws_certificate_get_client_cert()) + 1);
     if (ret != 0)
     {
         DebugPrint("Parse client key error -0x%08X\r\n", ret);
@@ -257,7 +190,11 @@ static int TLS_Init(void)
         return -1;
     }
 
-    ret = mbedtls_pk_parse_key(&pk_private_key, (const unsigned char *)private_key, strlen(private_key)+1, NULL, 0);
+    ret = mbedtls_pk_parse_key(&pk_private_key, 
+                                aws_certificate_get_client_key(), 
+                                strlen(aws_certificate_get_client_key()) + 1, 
+                                NULL, 
+                                0);
     if (ret != 0)
     {
         DebugPrint("Parse private key error -0x%08X\r\n", ret);
@@ -280,7 +217,7 @@ static int TLS_Init(void)
 
 //    mbedtls_ssl_setup(&ssl, &conf);
 
-    if ((ret = mbedtls_ssl_set_hostname(&ssl, m_mqtt_broker)) != 0)
+    if ((ret = mbedtls_ssl_set_hostname(&ssl, aws_get_arn())) != 0)
     {
         DebugPrint(" failed\n  ! mbedtls_ssl_set_hostname returned %d\n\n", ret);
         assert_failed((uint8_t*)__FILE__, __LINE__);
@@ -294,6 +231,16 @@ static int TLS_Init(void)
     return 0; /* no error */
 }
 
+void app_mqtt_disconnect(void)
+{
+    /* Close mqtt connection */
+    DebugPrint("Close mqtt connection\r\n");
+    mqtt_disconnect(&m_mqtt_client);
+//    mqtt_tls_close();
+//    m_mqtt_tls_init = false;
+    m_sub_req_err_count = 0;
+    m_mqtt_state = APP_MQTT_DISCONNECTED;
+}
 
 static void mqtt_sub_request_cb(void *arg, err_t result)
 {
@@ -307,13 +254,7 @@ static void mqtt_sub_request_cb(void *arg, err_t result)
         m_sub_req_err_count++;
         if (m_sub_req_err_count >= 5)
         {
-            /* Close mqtt connection */
-            DebugPrint("Close mqtt connection\r\n");
-            mqtt_disconnect(&m_mqtt_client);
-            MQTT_TlsClose();
-            m_tls_init = false;
-            m_sub_req_err_count = 0;
-            m_mqtt_state = APP_MQTT_DISCONNECTED;
+            app_mqtt_disconnect();
         }
         else
         {
@@ -498,7 +439,7 @@ static int8_t mqtt_connect_broker(mqtt_client_t *client)
 //    client_info.client_user = m_mqtt_username;
 //    client_info.client_pass = m_mqtt_password;
 
-     DebugPrint("Connecting to %s, port %d\r\n", m_mqtt_broker, m_mqtt_port);
+    DebugPrint("Connecting to %s, port %d\r\n", aws_get_arn(), aws_get_mqtt_port());
     /* 
     * Initiate client and connect to server, if this fails immediately an error code is returned
     * otherwise mqtt_connection_cb will be called with connection result after attempting 
@@ -507,7 +448,7 @@ static int8_t mqtt_connect_broker(mqtt_client_t *client)
     */
     err_t err = mqtt_client_connect(client, 
                                     &m_mqtt_server_address, 
-                                    m_mqtt_port, 
+                                    aws_get_mqtt_port(), 
                                     mqtt_client_connection_callback, 
                                     0, 
                                     &client_info);
@@ -588,6 +529,7 @@ void app_mqtt_client_init(void)
     sys_thread_new("MQTT", mqtt_client_thread, NULL, DEFAULT_THREAD_STACKSIZE, MQTT_CLIENT_THREAD_PRIO);
 }
 
+
 /**
   * @brief  http server thread 
   * @param arg: pointer on argument(not used here) 
@@ -596,43 +538,59 @@ void app_mqtt_client_init(void)
 static void mqtt_client_thread(void *arg)
 { 
     DebugPrint("MQTT thread started\r\n");
+
+    bool m_last_dhcp_state = false;
+
     m_mqtt_event = xEventGroupCreate();
     if (m_mqtt_event == NULL)
     {
         assert_failed((uint8_t*)__FILE__, __LINE__);
     }
-    
+
+    DebugPrint("Waiting for network ready\r\n");
+    while (app_ethernet_dhcp_ready())
+    {
+        osDelay(100);
+    }
+    m_last_dhcp_state = true;
+
     while (1)
     {
-        static uint8_t mqttTick = 0;
-        static uint32_t Ticks = 0, LastSendSubTime = 0;
-        
+        static uint8_t mqtt_tick = 0;
+        static uint32_t ticks = 0, last_time_send_subscribe_request = 0;
+
+        bool ethernet_ready;
         for (;;)
         {   
-            if (app_ethernet_dhcp_ready())
+            ethernet_ready = app_ethernet_dhcp_ready();
+            if (ethernet_ready)
             {
-                mqttTick++;
+                if (m_last_dhcp_state != ethernet_ready)
+                {
+                    m_last_dhcp_state = ethernet_ready;
+                }
+                mqtt_tick++;
                 switch (m_mqtt_state)
                 {
                     case APP_MQTT_DISCONNECTED:
                         /* init client info...*/
                         m_DNS_resolved = 0;
                         m_mqtt_state = APP_MQTT_RESOLVING_HOST_NAME;
-                        mqttTick = 4;
+                        mqtt_tick = 4;
 
-                        if (m_tls_init == false)
+                        if (m_mqtt_tls_init == false)
                         {
-                            m_tls_init = true;
-                            TLS_Init();
+                            m_mqtt_tls_init = true;
+                            mqtt_tls_init();
                         }
                         break;
 
                     case APP_MQTT_RESOLVING_HOST_NAME:
                         if (!m_DNS_resolved)
                         {
-                            if (mqttTick >= 5)
+                            if (mqtt_tick >= 5)
                             {
-                                mqttTick = 0;
+                                mqtt_tick = 0;
                                 err_t err = dns_gethostbyname(m_mqtt_broker, &m_mqtt_server_address, mqtt_dns_found, NULL);
                                 if (err == ERR_INPROGRESS)
                                 {
@@ -649,42 +607,42 @@ static void mqtt_client_thread(void *arg)
                         }
                         else
                         {
-                            mqttTick = 9;
+                            mqtt_tick = 9;
                             m_mqtt_state = APP_MQTT_CONNECTING;
                         }
                         break;
 
                     case APP_MQTT_CONNECTING:
-                        if (mqttTick >= 10)
+                        if (mqtt_tick >= 10)
                         {
                             if (mqtt_connect_broker(&m_mqtt_client) == ERR_OK)
-                                mqttTick = 5; /* Gui login sau 5s */
+                                mqtt_tick = 5; /* Gui login sau 5s */
                             else
-                                mqttTick = 0;
+                                mqtt_tick = 0;
                         }
                         break;
 
                     case APP_MQTT_CONNTECTED:
-                        if (mqttTick >= 10)
+                        if (mqtt_tick >= 10)
                         {
-                            mqttTick = 0;
+                            mqtt_tick = 0;
                             MQTT_SendLoginMessage();
                         }
                         break;
                 
                     case APP_MQTT_LOGINED:
                     {
-                        Ticks = osKernelSysTick();
+                        ticks = osKernelSysTick();
 
-                        if (LastSendSubTime == 0 || LastSendSubTime > Ticks)
-                            LastSendSubTime = Ticks;
+                        if (last_time_send_subscribe_request == 0 || last_time_send_subscribe_request > ticks)
+                            last_time_send_subscribe_request = ticks;
 
                         if (mqtt_client_is_connected(&m_mqtt_client))
                         {
                             /* Send subscribe message periodic */
-                            if (Ticks >= (LastSendSubTime + 30000))
+                            if (ticks >= (last_time_send_subscribe_request + 30000))
                             {
-                                LastSendSubTime = Ticks;
+                                last_time_send_subscribe_request = ticks;
                                 MQTT_SendSubscribeRequest();
                             }
                         }
@@ -698,7 +656,11 @@ static void mqtt_client_thread(void *arg)
             }
             else 
             {
-                // DebugPrint("DHCP not ready\r\n");
+                if (m_last_dhcp_state == true)
+                {
+                    app_mqtt_disconnect();
+                    m_last_dhcp_state = ethernet_ready;
+                }
             }
             osDelay(1000);
         }

@@ -67,7 +67,7 @@
    
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void User_notification(struct netif *netif);
+void app_ethernet_notification(struct netif *netif);
 
 bool app_ethernet_dhcp_ready(void);
 

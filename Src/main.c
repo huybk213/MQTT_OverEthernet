@@ -57,17 +57,13 @@
 #include "app_mqtt.h"
 #include "sntp.h"
 #include "app_debug.h"
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
+
 struct netif gnetif; /* network interface structure */
 
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
 static void StartThread(void const * argument);
-static void BSP_Config(void);
-static void Netif_Config(void);
+void netif_start(bool restart);
 static void MPU_Config(void);
 static void CPU_CACHE_Enable(void);
 static void Error_Handler(void);
@@ -140,6 +136,7 @@ int main(void)
   /* Configure the system clock to 200 MHz */
   SystemClock_Config();
   
+  DebugPrint("Build %s\r\n", __DATE__)
   RNG_Init();
   /* Init thread */
 #if defined(__GNUC__)
@@ -183,22 +180,21 @@ static void StartThread(void const * argument)
 { 
   DebugPrint("Start thread\r\n");
   /* Initialize LCD and LEDs */
-  BSP_Config();
   
   /* Create tcp_ip stack thread */
+  DebugPrint("tcpip_init\r\n");
   tcpip_init(NULL, NULL);
   
   /* Initialize the LwIP stack */
-  Netif_Config();
-  
-  /* Initialize webserver demo */
-//  http_server_netconn_init();
+  DebugPrint("Initialize the LwIP stack\r\n");
+  netif_start(false);
+    
+  DebugPrint("Initialize MQTT client\r\n");
   app_mqtt_client_init();
   
+  DebugPrint("Initialize sntp client\r\n");
   initialize_sntp();
-  
-  /* Notify user about the network interface config */
-  User_notification(&gnetif);
+ 
   
 #ifdef USE_DHCP
   /* Start DHCPClient */
@@ -218,7 +214,7 @@ static void StartThread(void const * argument)
   * @param  None
   * @retval None
   */
-static void Netif_Config(void)
+void netif_start(bool restart)
 {
   ip_addr_t ipaddr;
   ip_addr_t netmask;
@@ -234,8 +230,12 @@ static void Netif_Config(void)
   IP_ADDR4(&gw,GW_ADDR0,GW_ADDR1,GW_ADDR2,GW_ADDR3);
 #endif /* USE_DHCP */
   
+  if (restart)
+  {
+      DebugPrint("Remove netif\r\n");
+      netif_remove(&gnetif);
+  }
   netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &tcpip_input);
-  
   /*  Registers the default network interface. */
   netif_set_default(&gnetif);
   
@@ -251,35 +251,12 @@ static void Netif_Config(void)
     /* When the netif link is down this function must be called */
     netif_set_down(&gnetif);
   }
+  
+  /* Notify user about the network interface config */
+  app_ethernet_notification(&gnetif);
+  
 }
 
-/**
-  * @brief  Initializes the STM32756G-EVAL's LCD and LEDs resources.
-  * @param  None
-  * @retval None
-  */
-static void BSP_Config(void)
-{
-//  /* Initialize the LCD */
-//  BSP_LCD_Init();
-//  
-//  /* Initialize the LCD Layers */
-//  BSP_LCD_LayerDefaultInit(1, LCD_FB_START_ADDRESS);
-//  
-//  /* Set LCD Foreground Layer  */
-//  BSP_LCD_SelectLayer(1);
-//  
-//  BSP_LCD_SetFont(&LCD_DEFAULT_FONT);
-  
-//  /* Initialize LCD Log module */
-//  LCD_LOG_Init();
-//  
-//  /* Show Header and Footer texts */
-//  LCD_LOG_SetHeader((uint8_t *)"sful-bytech.com");
-//  LCD_LOG_SetFooter((uint8_t *)"HuyTV test PPPoE");
-//  
-//  LCD_UsrLog ((char *)"  State: Ethernet Initialization ...\n");
-}
 
 /**
   * @brief  System Clock Configuration
