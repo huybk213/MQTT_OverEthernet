@@ -24,14 +24,22 @@
 #include "lwip/altcp_tls.h"
 #include "lwip/priv/altcp_priv.h"
 #include "mbedtls/debug.h"
+#include "FreeRTOS.h"
+#include "event_groups.h"
 
 #define MQTT_CLIENT_THREAD_PRIO    osPriorityAboveNormal
-#define MQTT_CLIENT_SUB_QOS        0
-#define MQTT_CLIENT_PUB_QOS        0
+#define MQTT_CLIENT_SUB_QOS        1
+#define MQTT_CLIENT_PUB_QOS        1
 #define MQTT_CLIENT_RETAIN         0
+
+/* MQTT event bits */
+
+#define MQTT_EVENT_CONNTECTED (1 << 0)
+#define MQTT_EVENT_PULISH_SUCCESS (1 << 1)
+
 static void mqtt_client_thread(void *arg);
 static app_mqtt_state_t m_mqtt_state = APP_MQTT_DISCONNECTED;
-
+static EventGroupHandle_t m_mqtt_event = NULL;
 
 
 #define MQTT_KEEP_ALIVE_INTERVAL 600
@@ -396,6 +404,7 @@ static void mqtt_pub_request_cb(void *arg, err_t result)
     else
     {
         DebugPrint("Publish: OK\r\n");
+        xEventGroupSetBits(m_mqtt_event, MQTT_EVENT_PULISH_SUCCESS);
     }
 }
 
@@ -404,8 +413,9 @@ static void MQTT_SendLoginMessage(void)
 {
     memset(m_mqtt_tx_buffer, 0, sizeof(m_mqtt_tx_buffer));
     memset(m_mqtt_pub_topic, 0, sizeof(m_mqtt_pub_topic));
-
-    sprintf(m_mqtt_tx_buffer, "MQTT_SendLoginMessage %u - %s\r\n", 1, "T1");
+    
+    static uint32_t msg_cnt = 0;
+    sprintf(m_mqtt_tx_buffer, "Test %d\r\n", msg_cnt++);
     sprintf(m_mqtt_pub_topic, "%s", "huydeptrai");
     uint16_t size = strlen(m_mqtt_tx_buffer);
 
@@ -414,7 +424,15 @@ static void MQTT_SendLoginMessage(void)
     err_t err = mqtt_publish(&m_mqtt_client, m_mqtt_pub_topic, m_mqtt_tx_buffer, size, MQTT_CLIENT_PUB_QOS, MQTT_CLIENT_RETAIN, mqtt_pub_request_cb, NULL);
     if (err == ERR_OK)
     {
-        DebugPrint("Publish msg success\r\n");
+        DebugPrint("Wait for publish status OK\r\n");
+        if (xEventGroupWaitBits(m_mqtt_event, MQTT_EVENT_PULISH_SUCCESS, pdTRUE, pdFALSE, 3000))
+        {
+            DebugPrint("Publish msg success\r\n");
+        }
+        else
+        {
+            DebugPrint("Publish msg failed\r\n");
+        }
     }
     else
     {
@@ -499,10 +517,10 @@ static int8_t mqtt_connect_broker(mqtt_client_t *client)
     if (err != ERR_OK)
     {
         DebugPrint("mqtt_connect return %d, mem %d\r\n", err, xPortGetFreeHeapSize());
-        if (err == ERR_ISCONN)
-        {
-            DebugPrint("MQTT already connected\r\n");
-        }
+//        if (err == ERR_ISCONN)
+//        {
+//            DebugPrint("MQTT already connected\r\n");
+//        }
     }
     else
     {
@@ -578,6 +596,12 @@ void app_mqtt_client_init(void)
 static void mqtt_client_thread(void *arg)
 { 
     DebugPrint("MQTT thread started\r\n");
+    m_mqtt_event = xEventGroupCreate();
+    if (m_mqtt_event == NULL)
+    {
+        assert_failed((uint8_t*)__FILE__, __LINE__);
+    }
+    
     while (1)
     {
         static uint8_t mqttTick = 0;

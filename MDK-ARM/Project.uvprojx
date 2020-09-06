@@ -892,6 +892,11 @@
               <FileType>1</FileType>
               <FilePath>../../../../../../Middlewares/Third_Party/FreeRTOS/Source/croutine.c</FilePath>
             </File>
+            <File>
+              <FileName>event_groups.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\Middlewares\Third_Party\FreeRTOS\Source\event_groups.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

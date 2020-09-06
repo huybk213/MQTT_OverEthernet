@@ -62,6 +62,9 @@ __IO uint8_t DHCP_state = DHCP_OFF;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+
+extern ETH_HandleTypeDef EthHandle;
+
 /**
   * @brief  Notify the User about the network interface config status
   * @param  netif: the network interface
@@ -77,7 +80,7 @@ void User_notification(struct netif *netif)
 #else
     uint8_t iptxt[20];
     sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));
-    DebugPrint ("Static IP address: %s\n", iptxt);
+    DebugPrint("Static IP address: %s\n", iptxt);
 #endif /* USE_DHCP */
   }
   else
@@ -86,7 +89,7 @@ void User_notification(struct netif *netif)
     /* Update DHCP state machine */
     DHCP_state = DHCP_LINK_DOWN;
 #endif  /* USE_DHCP */
-    DebugPrint ("The network cable is not connected\n");
+    DebugPrint("The network cable is not connected\n");
   } 
 }
 
@@ -111,7 +114,9 @@ void DHCP_thread(void const * argument)
   ip_addr_t gw;
   struct dhcp *dhcp;
   uint8_t iptxt[20];
-  
+  uint32_t err = 0;
+  uint32_t phyreg = 0;
+  uint32_t phyreg_link_status = 0;
   for (;;)
   {
     switch (DHCP_state)
@@ -123,7 +128,7 @@ void DHCP_thread(void const * argument)
         ip_addr_set_zero_ip4(&netif->gw);       
         dhcp_start(netif);
         DHCP_state = DHCP_WAIT_ADDRESS;
-        DebugPrint ("  State: Looking for DHCP server ...\n");
+        DebugPrint("State: Looking for DHCP server...\r\n");
       }
       break;
       
@@ -134,7 +139,8 @@ void DHCP_thread(void const * argument)
           DHCP_state = DHCP_ADDRESS_ASSIGNED;	
          
           sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));   
-          DebugPrint ("IP address assigned by a DHCP server: %s\n", iptxt);
+          DebugPrint("IP address assigned by a DHCP server: %s\n", iptxt);
+          phyreg_link_status = phyreg;
         }
         else
         {
@@ -155,8 +161,9 @@ void DHCP_thread(void const * argument)
             netif_set_addr(netif, ip_2_ip4(&ipaddr), ip_2_ip4(&netmask), ip_2_ip4(&gw));
             
             sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));
-            DebugPrint ("DHCP Timeout !! \n");
-            DebugPrint ("Static IP address: %s\n", iptxt);  
+            DebugPrint("DHCP Timeout !!\n");
+            DebugPrint("Static IP address: %s\n", iptxt);
+            phyreg_link_status = phyreg;
           }
         }
       }
@@ -164,6 +171,7 @@ void DHCP_thread(void const * argument)
   case DHCP_LINK_DOWN:
     {
       /* Stop DHCP */
+      DebugPrint("Ethernet DHCP link down\n");
       dhcp_stop(netif);
       DHCP_state = DHCP_OFF; 
     }
@@ -171,6 +179,22 @@ void DHCP_thread(void const * argument)
     default: break;
     }
     
+    if ((err = HAL_ETH_ReadPHYRegister(&EthHandle, PHY_SR, &phyreg)) != HAL_OK)
+    {
+        DebugPrint("HAL_ETH_ReadPHYRegister error %d\n", err);
+    }
+    else
+    {
+        uint32_t phy_status = phyreg & PHY_LINKED_STATUS;
+        if (phy_status != PHY_LINKED_STATUS)
+        {
+            if (PHY_RESET == phy_status)
+            {
+                DebugPrint("Ethernet disconnected\n", err);
+                phyreg_link_status = phy_status;
+            }
+        }
+    }
     /* wait 250 ms */
     osDelay(250);
   }

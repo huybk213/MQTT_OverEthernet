@@ -157,6 +157,23 @@ int main(void)
   for( ;; );
 }
 
+
+void ethernetif_update_config(struct netif *netif)
+{
+//    if (netif_is_link_up(netif) && (PHYLinkState <= LAN_CHIP_STATUS_LINK_DOWN))
+    static uint32_t m_last_link_status = false;
+    uint32_t link_is_up = !netif_is_link_up(netif);
+    if (link_is_up == false && (m_last_link_status != link_is_up))
+    {
+        DebugPrint("Netif link down\r\n");
+    }
+    else if (link_is_up == true && (m_last_link_status != link_is_up))
+    {
+        DebugPrint("Netif link up\r\n");
+    }
+    m_last_link_status = link_is_up;
+}
+
 /**
   * @brief  Start Thread 
   * @param  argument not used
@@ -164,7 +181,7 @@ int main(void)
   */
 static void StartThread(void const * argument)
 { 
-    DebugPrint("Start thread\r\n");
+  DebugPrint("Start thread\r\n");
   /* Initialize LCD and LEDs */
   BSP_Config();
   
@@ -222,6 +239,8 @@ static void Netif_Config(void)
   /*  Registers the default network interface. */
   netif_set_default(&gnetif);
   
+  netif_set_link_callback(&gnetif, ethernetif_update_config);
+    
   if (netif_is_link_up(&gnetif))
   {
     /* When the netif is fully configured this function must be called.*/
