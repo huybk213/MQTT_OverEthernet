@@ -1,9 +1,13 @@
 #include "aws_certificate.h"
 
+// Replace your broker here
 const char * m_arn = "a2fpu8zc49udz1-ats.iot.ap-southeast-1.amazonaws.com";
+
+// Replace your port
 const uint16_t m_mqtt_port = 8883;
 
-static const char * m_root_ca = "-----BEGIN CERTIFICATE-----\n\
+// Replace your cert here
+static const unsigned char * m_root_ca = "-----BEGIN CERTIFICATE-----\n\
 MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF\n\
 ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6\n\
 b24gUm9vdCBDQSAxMB4XDTE1MDUyNjAwMDAwMFoXDTM4MDExNzAwMDAwMFowOTEL\n\
@@ -24,7 +28,8 @@ o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU\n\
 rqXRfboQnoZsG4q5WTP468SQvvG5\n\
 -----END CERTIFICATE-----";
 
-static const char * m_client_cert = "-----BEGIN CERTIFICATE-----\n\
+// Replace your cert here
+static const unsigned char * m_client_cert = "-----BEGIN CERTIFICATE-----\n\
 MIIDWjCCAkKgAwIBAgIVAIbb/R9GqyZ2cDjeZaqifS9zRGXjMA0GCSqGSIb3DQEB\n\
 CwUAME0xSzBJBgNVBAsMQkFtYXpvbiBXZWIgU2VydmljZXMgTz1BbWF6b24uY29t\n\
 IEluYy4gTD1TZWF0dGxlIFNUPVdhc2hpbmd0b24gQz1VUzAeFw0yMDA3MDcwNDU2\n\
@@ -45,7 +50,8 @@ zsW6qalZUWZf+BuAErKTw57UVFsJQG5IncSDWaObn70GCkrLNIHBrpPNIF5UO8Jt\n\
 7oFF/5CFcihDKxuueTjBeaOlmnhXy951sQSG3tBo8SyxrM09IMK4krTUHVV/aQ==\n\
 -----END CERTIFICATE-----";
 
-static const char * m_private_key = "-----BEGIN RSA PRIVATE KEY-----\n\
+// Replace your cert here
+static const unsigned char * m_private_key = "-----BEGIN RSA PRIVATE KEY-----\n\
 MIIEpAIBAAKCAQEAvR2SiU1zGB+uiRcHq29S3qMiSuw9IUFBuoqA6h2gqcLgFzwf\n\
 rLclt5FM8aeU3xO7rdTKsEaMpVxqNP6s35i9PADBgApl2v1rG1Np4TSh/6vTG5bj\n\
 S0/5PE275IQSeCbJV14LSMj/0DmlB4fGoxB/D/CScHBYPXUsVc8W/joM8kXIqnsU\n\
@@ -73,23 +79,18 @@ QWxXz9GeUY1+ExQNFqC/u294hIg6IY9aKktToraKk5tmyAaRQhqSl7CABzlQgWlQ\n\
 jvRIj29HDnkQw0poT/1/1ePSL6xHkVWMwqraffRmLayFCfxVFxAwbQ==\n\
 -----END RSA PRIVATE KEY-----";
 
-const char * aws_certificate_get_m_root_ca(void)
+const unsigned char * aws_certificate_get_root_ca(void)
 {
     return m_root_ca;
 }
 
-/**
- * @brief Get your AWS ROOTCA certificate string
- */
-const char * aws_certificate_get_client_cert(void)
+
+const unsigned char * aws_certificate_get_client_cert(void)
 {
     return m_client_cert;
 }
 
-/**
- * @brief Get your AWS ROOTCA certificate string
- */
-const char * aws_certificate_get_client_key(void)
+const unsigned char * aws_certificate_get_client_key(void)
 {
     return m_private_key;
 }
@@ -99,7 +100,7 @@ const char * aws_get_arn(void)
     return m_arn;
 }
 
-const uint16_t aws_get_mqtt_port(void)
+uint16_t aws_get_mqtt_port(void)
 {
     return m_mqtt_port;
 }

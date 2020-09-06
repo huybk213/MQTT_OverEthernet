@@ -136,7 +136,7 @@ int main(void)
   /* Configure the system clock to 200 MHz */
   SystemClock_Config();
   
-  DebugPrint("Build %s\r\n", __DATE__)
+  DebugPrint("Build %s\r\n", __DATE__);
   RNG_Init();
   /* Init thread */
 #if defined(__GNUC__)

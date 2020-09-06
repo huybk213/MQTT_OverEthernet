@@ -66,7 +66,7 @@ __IO uint8_t DHCP_state = DHCP_OFF;
 extern ETH_HandleTypeDef EthHandle;
 extern bool netif_start(bool restart);
 
-uint32_t link_up_status = 0;
+bool m_last_link_up_status = false;
 static bool m_ip_assigned = false;
 /**
   * @brief  Notify the User about the network interface config status
@@ -99,7 +99,7 @@ void app_ethernet_notification(struct netif *netif)
 
 bool app_ethernet_dhcp_ready(void)
 {
-    return (link_up_status  && m_ip_assigned)? true : false;
+    return (m_last_link_up_status == true && m_ip_assigned == true) ? true : false;
 }
 
 
@@ -143,7 +143,7 @@ void DHCP_thread(void const * argument)
          
           sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));   
           DebugPrint("IP address assigned by a DHCP server: %s\n", iptxt);
-          link_up_status = PHY_LINKED_STATUS;
+          m_last_link_up_status = true;
           m_ip_assigned = true;
         }
         else
@@ -167,7 +167,7 @@ void DHCP_thread(void const * argument)
             sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));
             DebugPrint("DHCP Timeout !!\n");
             DebugPrint("Static IP address: %s\n", iptxt);
-            link_up_status = PHY_LINKED_STATUS;
+            m_last_link_up_status = true;
             m_ip_assigned = true;
           }
         }
@@ -192,16 +192,17 @@ void DHCP_thread(void const * argument)
     }
     else
     {
-        uint32_t phy_link_status = phyreg & PHY_LINKED_STATUS;
-        if (phy_link_status != PHY_LINKED_STATUS && link_up_status != phy_link_status)
+        bool phy_link_status = phyreg & PHY_LINKED_STATUS ? 1 : 0;
+        if (phy_link_status == false && m_last_link_up_status != phy_link_status)
         {
             DebugPrint("Ethernet disconnected\n", err);
+            m_last_link_up_status = false;
         }
-        else if (phy_link_status == PHY_LINKED_STATUS && link_up_status != phy_link_status)
+        else if (phy_link_status  && (m_last_link_up_status != phy_link_status))
         {
-            DebugPrint("Ethernet reconnect again\n", err);
+            DebugPrint("Ethernet connected\n", err);
+            m_last_link_up_status = true;
         }
-        link_up_status = phy_link_status;
     }
     /* wait 250 ms */
     osDelay(250);

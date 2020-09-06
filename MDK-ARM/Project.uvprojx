@@ -373,7 +373,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F769xx,USE_STM32F769I_DISCO,USE_FULL_ASSERT,MBEDTLS_CONFIG_FILE="&lt;mbedtls_alt_config.h&gt;"</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Src;../../../../../../Drivers/CMSIS/Device/ST/STM32F7xx/Include;../../../../../../Drivers/STM32F7xx_HAL_Driver/Inc;../../../../../../Drivers/BSP/STM32F769I-Discovery;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components;../Third_Party/LwIP/src/include/;../Third_Party/LwIP/system;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/include;../../../../../../Utilities;../../../../../../Utilities/Log;..\..\LwIP_HTTP_Server_Socket_RTOS;..\..\LwIP_HTTP_Server_Netconn_RTOS;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\mbedTLS\include;..\MDK-ARM;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\LwIP\src\include\lwip\apps;..\..\MQTT_OverEthernet;..\SEGGER_RTT_V680a\RTT</IncludePath>
+              <IncludePath>../Inc;../Src;../../../../../../Drivers/CMSIS/Device/ST/STM32F7xx/Include;../../../../../../Drivers/STM32F7xx_HAL_Driver/Inc;../../../../../../Drivers/BSP/STM32F769I-Discovery;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components;../Third_Party/LwIP/src/include/;../Third_Party/LwIP/system;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/include;../../../../../../Utilities;../../../../../../Utilities/Log;..\..\LwIP_HTTP_Server_Socket_RTOS;..\..\LwIP_HTTP_Server_Netconn_RTOS;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\mbedTLS\include;..\MDK-ARM;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\LwIP\src\include\lwip\apps;..\..\MQTT_OverEthernet;..\SEGGER_RTT_V680a\RTT;..\AWS</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1371,6 +1371,16 @@
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SEGGER_RTT_V680a\RTT\SEGGER_RTT_printf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>AWS</GroupName>
+          <Files>
+            <File>
+              <FileName>aws_certificate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AWS\aws_certificate.c</FilePath>
             </File>
           </Files>
         </Group>

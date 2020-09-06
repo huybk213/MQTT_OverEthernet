@@ -77,55 +77,55 @@ static mbedtls_ctr_drbg_context ctr_drbg;
 static void my_debug(void *ctx, int level, const char *file, int line, const char *str) 
 {
     ((void)level);
-    DebugPrint("\r\n%s, at line %d in file %s\n", str, line, file);
+    DebugPrint("\r\n%s, at line %d in file %\r\n", str, line, file);
 }
 #if 0
 static int mqtt_tls_verify(void *data, mbedtls_x509_crt *crt, int depth, int *flags) 
 {
 	char buf[1024]; 
 
-	DebugPrint("\nVerify requested for (Depth %d):\n", depth ); 
+	DebugPrint("Verify requested for (Depth %d):\r\n", depth ); 
 	mbedtls_x509_crt_info( buf, sizeof( buf ) - 1, "", crt ); 
 //	DebugPrint("%s", buf ); 
 
 	if ( ( (*flags) & MBEDTLS_X509_BADCERT_EXPIRED ) != 0 ) 
     {
-        DebugPrint("  ! server certificate has expired\n" ); 
+        DebugPrint("  ! server certificate has expired\r\n" ); 
     }
 
 	if ( ( (*flags) & MBEDTLS_X509_BADCERT_REVOKED ) != 0 ) 
 		DebugPrint("  ! server certificate has been revoked\n" ); 
 
 	if ( ( (*flags) &  MBEDTLS_X509_BADCERT_CN_MISMATCH ) != 0 ) 
-		DebugPrint("  ! CN mismatch\n" ); 
+		DebugPrint("  ! CN mismatch\r\n" ); 
 
 	if ( ( (*flags) &  MBEDTLS_X509_BADCERT_NOT_TRUSTED ) != 0 ) 
-		DebugPrint("  ! self-signed or not signed by a trusted CA\n" ); 
+		DebugPrint("  ! self-signed or not signed by a trusted CA\r\n" ); 
 
 	if ( ( (*flags) &  MBEDTLS_X509_BADCRL_NOT_TRUSTED ) != 0 ) 
-		DebugPrint("  ! CRL not trusted\n" ); 
+		DebugPrint("  ! CRL not trusted\r\n" ); 
 
 	if ( ( (*flags) &  MBEDTLS_X509_BADCRL_EXPIRED ) != 0 ) 
 		DebugPrint("  ! CRL expired\n" ); 
 
 	if ( ( (*flags) &  MBEDTLS_X509_BADCERT_OTHER ) != 0 ) 
-		DebugPrint("  ! other (unknown) flag\n" ); 
+		DebugPrint("  ! other (unknown) flag\r\n" ); 
 
 //	if ( ( *flags ) == 0 ) 
-//		DebugPrint("  This certificate has no flags\n" ); 
+//		DebugPrint("  This certificate has no flags\r\n" ); 
 
 	return( 0 ); 
 }
 #endif
 
-static void mqtt_tls_close(void) 
-{ /* called from mqtt.c */
-    /*! \todo This should be in a separate module */
-    mbedtls_ssl_free(&ssl);
-    mbedtls_ssl_config_free(&conf);
-    mbedtls_ctr_drbg_free(&ctr_drbg );
-    mbedtls_entropy_free(&entropy);
-}
+//static void mqtt_tls_close(void) 
+//{ /* called from mqtt.c */
+//    /*! \todo This should be in a separate module */
+//    mbedtls_ssl_free(&ssl);
+//    mbedtls_ssl_config_free(&conf);
+//    mbedtls_ctr_drbg_free(&ctr_drbg );
+//    mbedtls_entropy_free(&entropy);
+//}
 
 static int mqtt_tls_init(void) 
 {
@@ -172,7 +172,7 @@ static int mqtt_tls_init(void)
 #if 1 // CONFIG_USE_SERVER_VERIFICATION
     ret = mbedtls_x509_crt_parse(&x509_root_ca, 
                                 aws_certificate_get_root_ca(), 
-                                strlen(aws_certificate_get_root_ca()) + 1);
+                                strlen((char*)aws_certificate_get_root_ca()) + 1);
     if (ret != 0)
     {
         DebugPrint("Parse root ca error -0x%08X\r\n", ret);
@@ -182,7 +182,7 @@ static int mqtt_tls_init(void)
     
     ret = mbedtls_x509_crt_parse(&x509_client_key, 
                                 aws_certificate_get_client_cert(), 
-                                strlen(aws_certificate_get_client_cert()) + 1);
+                                strlen((char*)aws_certificate_get_client_cert()) + 1);
     if (ret != 0)
     {
         DebugPrint("Parse client key error -0x%08X\r\n", ret);
@@ -192,7 +192,7 @@ static int mqtt_tls_init(void)
 
     ret = mbedtls_pk_parse_key(&pk_private_key, 
                                 aws_certificate_get_client_key(), 
-                                strlen(aws_certificate_get_client_key()) + 1, 
+                                strlen((char*)aws_certificate_get_client_key()) + 1, 
                                 NULL, 
                                 0);
     if (ret != 0)
@@ -350,7 +350,7 @@ static void mqtt_pub_request_cb(void *arg, err_t result)
 }
 
 
-static void MQTT_SendLoginMessage(void)
+static void mqtt_send_login_msq(void)
 {
     memset(m_mqtt_tx_buffer, 0, sizeof(m_mqtt_tx_buffer));
     memset(m_mqtt_pub_topic, 0, sizeof(m_mqtt_pub_topic));
@@ -381,7 +381,7 @@ static void MQTT_SendLoginMessage(void)
     }
 }
 
-static void MQTT_SendSubscribeRequest(void)
+static void mqtt_send_subscription_req(void)
 {
     err_t err = mqtt_subscribe(&m_mqtt_client, m_mqtt_sub_topic, MQTT_CLIENT_SUB_QOS, mqtt_sub_request_cb, NULL);
 
@@ -389,27 +389,10 @@ static void MQTT_SendSubscribeRequest(void)
 }
 
 
-int8_t MQTT_PubDebugMessage(char *topicSubName, char *msgContent, uint16_t msgLeng)
-{
-    if (!mqtt_client_is_connected(&m_mqtt_client))
-        return -1;
-
-    /* Publish mqtt */
-    err_t err = mqtt_publish(&m_mqtt_client, m_mqtt_pub_topic, msgContent, msgLeng, MQTT_CLIENT_PUB_QOS, MQTT_CLIENT_RETAIN, mqtt_pub_request_cb, NULL);
-    if (err != ERR_OK)
-    {
-        DebugPrint("Publish err: %d\r\n", err);
-        return -1;
-    }
-    
-    DebugPrint("Send dbg to topic %s, data %s\r\n", m_mqtt_pub_topic, msgContent);
-    return err;
-}
-
-char client_id[32];
+static char m_client_id[32];
 struct mqtt_connect_client_info_t client_info = 
 {
-    client_id,
+    m_client_id,
     NULL, NULL,				  //User, pass
     MQTT_KEEP_ALIVE_INTERVAL, //Keep alive in seconds, 0 - disable
     NULL, NULL, 0, 0		  //Will topic, will msg, will QoS, will retain
@@ -421,14 +404,14 @@ static int8_t mqtt_connect_broker(mqtt_client_t *client)
     if (idx == 0)
         idx = osKernelSysTick();
 
-    snprintf(client_id, sizeof(client_id), "%s_%d", "test", idx++ % 4096);
+    snprintf(m_client_id, sizeof(m_client_id), "%s_%d", "test", idx++ % 4096);
 
 
     if (client_info.tls_config == NULL) 
-        client_info.tls_config = altcp_tls_create_config_client_2wayauth((const u8_t*)root_ca, strlen(root_ca) + 1,
-                                                                (const u8_t*)private_key, strlen(private_key) + 1,
+        client_info.tls_config = altcp_tls_create_config_client_2wayauth((const u8_t*)aws_certificate_get_root_ca(), strlen((char*)aws_certificate_get_root_ca()) + 1,
+                                                                (const u8_t*)aws_certificate_get_client_key(), strlen((char*)aws_certificate_get_client_key()) + 1,
                                                                 NULL, NULL,
-                                                                (const u8_t*)client_key, strlen(client_key) + 1);
+                                                                (const u8_t*)aws_certificate_get_client_cert(), strlen((char*)aws_certificate_get_client_cert()) + 1);
 
     if (client_info.tls_config == NULL)
     {
@@ -439,7 +422,7 @@ static int8_t mqtt_connect_broker(mqtt_client_t *client)
 //    client_info.client_user = m_mqtt_username;
 //    client_info.client_pass = m_mqtt_password;
 
-    DebugPrint("Connecting to %s, port %d\r\n", aws_get_arn(), aws_get_mqtt_port());
+    DebugPrint("Connecting to broker %s, port %d\r\n", aws_get_arn(), aws_get_mqtt_port());
     /* 
     * Initiate client and connect to server, if this fails immediately an error code is returned
     * otherwise mqtt_connection_cb will be called with connection result after attempting 
@@ -498,20 +481,6 @@ static void mqtt_dns_found(const char *hostname, const ip_addr_t *ipaddr, void *
 }
 
 
-uint32_t MQTT_ClientGetResponseBufferSize()
-{
-    return sizeof(m_mqtt_tx_buffer);
-}
-
-bool MqttClientIsConnectedToServer(void)
-{
-    if (m_mqtt_state == APP_MQTT_CONNTECTED
-        || m_mqtt_state == APP_MQTT_LOGINED)
-        return 1;
-
-    return 0;
-}
-
 app_mqtt_state_t app_mqtt_get_state(void)
 {
     return m_mqtt_state;
@@ -548,7 +517,7 @@ static void mqtt_client_thread(void *arg)
     }
 
     DebugPrint("Waiting for network ready\r\n");
-    while (app_ethernet_dhcp_ready())
+    while (app_ethernet_dhcp_ready() == false)
     {
         osDelay(100);
     }
@@ -583,6 +552,7 @@ static void mqtt_client_thread(void *arg)
                             m_mqtt_tls_init = true;
                             mqtt_tls_init();
                         }
+                        
                         break;
 
                     case APP_MQTT_RESOLVING_HOST_NAME:
@@ -591,7 +561,7 @@ static void mqtt_client_thread(void *arg)
                             if (mqtt_tick >= 5)
                             {
                                 mqtt_tick = 0;
-                                err_t err = dns_gethostbyname(m_mqtt_broker, &m_mqtt_server_address, mqtt_dns_found, NULL);
+                                err_t err = dns_gethostbyname(aws_get_arn(), &m_mqtt_server_address, mqtt_dns_found, NULL);
                                 if (err == ERR_INPROGRESS)
                                 {
                                     /* DNS request sent, wait for sntp_dns_found being called */
@@ -599,7 +569,7 @@ static void mqtt_client_thread(void *arg)
                                 }
                                 else if (err == ERR_OK)
                                 {
-                                    DebugPrint("dns resolved aready, host %s, mqtt_ipaddr = %s\r\n", m_mqtt_broker, 
+                                    DebugPrint("dns resolved aready, host %s, mqtt_ipaddr = %s\r\n", aws_get_arn(), 
                                                                                                     ipaddr_ntoa(&m_mqtt_server_address));
                                     m_DNS_resolved = 1;
                                 }
@@ -623,13 +593,13 @@ static void mqtt_client_thread(void *arg)
                         break;
 
                     case APP_MQTT_CONNTECTED:
-                        if (mqtt_tick >= 10)
+                        if (mqtt_tick > 10)
                         {
                             mqtt_tick = 0;
-                            MQTT_SendLoginMessage();
+                            mqtt_send_login_msq();
                         }
-                        break;
-                
+                    break;
+
                     case APP_MQTT_LOGINED:
                     {
                         ticks = osKernelSysTick();
@@ -643,7 +613,7 @@ static void mqtt_client_thread(void *arg)
                             if (ticks >= (last_time_send_subscribe_request + 30000))
                             {
                                 last_time_send_subscribe_request = ticks;
-                                MQTT_SendSubscribeRequest();
+                                mqtt_send_subscription_req();
                             }
                         }
                         else
@@ -665,36 +635,4 @@ static void mqtt_client_thread(void *arg)
             osDelay(1000);
         }
     }
-    
-//   struct netconn *conn, *newconn;
-//   err_t err, accept_err;
-  
-//   /* Create a new TCP connection handle */
-//   conn = netconn_new(NETCONN_TCP);
-  
-//   if (conn!= NULL)
-//   {
-//     /* Bind to port 80 (HTTP) with default IP address */
-//     err = netconn_bind(conn, NULL, 80);
-    
-//     if (err == ERR_OK)
-//     {
-//       /* Put the connection into LISTEN state */
-//       netconn_listen(conn);
-  
-//       while(1) 
-//       {
-//         /* accept any icoming connection */
-//         accept_err = netconn_accept(conn, &newconn);
-//         if(accept_err == ERR_OK)
-//         {
-//           /* serve connection */
-//           http_server_serve(newconn);
-
-//           /* delete connection */
-//           netconn_delete(newconn);
-//         }
-//       }
-//     }
-//   }
 }

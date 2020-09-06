@@ -87,7 +87,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define MEMP_OVERFLOW_CHECK             1
 /* ---------- Pbuf options ---------- */
 /* PBUF_POOL_SIZE: the number of buffers in the pbuf pool. */
-#define PBUF_POOL_SIZE          8
+#define PBUF_POOL_SIZE          16
 
 /* PBUF_POOL_BUFSIZE: the size of each pbuf in the pbuf pool. */
 #define PBUF_POOL_BUFSIZE       1524
@@ -104,7 +104,7 @@ a lot of data that needs to be copied, this should be set high. */
 #define TCP_QUEUE_OOSEQ         0
 
 /* TCP Maximum segment size. */
-#define TCP_MSS                 (1500 - 40)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
+#define TCP_MSS                 (8192)	  /* TCP_MSS = (Ethernet MTU - IP header size - TCP header size) */
 
 /* TCP sender buffer space (bytes). */
 #define TCP_SND_BUF             (4*TCP_MSS)
@@ -229,11 +229,11 @@ The STM32F7xx allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define DEFAULT_UDP_RECVMBOX_SIZE       6
 #define DEFAULT_TCP_RECVMBOX_SIZE       6
 #define DEFAULT_ACCEPTMBOX_SIZE         6
-#define DEFAULT_THREAD_STACKSIZE        500
+#define DEFAULT_THREAD_STACKSIZE        (128*6)
 #define TCPIP_THREAD_PRIO               osPriorityHigh
 #define LWIP_DEBUG                      1
 #define LWIP_DNS                        1
-
+#define ALTCP_MBEDTLS_DEBUG             LWIP_DBG_ON
 #endif /* __LWIPOPTS_H__ */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
