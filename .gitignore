@@ -46,3 +46,7 @@ Third_Party/mbedTLS/visualc/VS2010/
 Third_Party/mbedTLS/scripts/
 
 Third_Party/mbedTLS/programs/test/
+
+*.__i
+
+*._ia
