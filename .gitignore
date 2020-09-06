@@ -52,3 +52,5 @@ Third_Party/mbedTLS/programs/test/
 *._ia
 
 MDK-ARM/Project.uvguix.HuyTV
+
+*.hex

@@ -49,8 +49,8 @@
 #include "lwip/dhcp.h"
 #include "app_ethernet.h"
 #include "ethernetif.h"
-#include "lcd_log.h"
-
+//#include "lcd_log.h"
+#include "app_debug.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -77,7 +77,7 @@ void User_notification(struct netif *netif)
 #else
     uint8_t iptxt[20];
     sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));
-    LCD_UsrLog ("Static IP address: %s\n", iptxt);
+    DebugPrint ("Static IP address: %s\n", iptxt);
 #endif /* USE_DHCP */
   }
   else
@@ -86,7 +86,7 @@ void User_notification(struct netif *netif)
     /* Update DHCP state machine */
     DHCP_state = DHCP_LINK_DOWN;
 #endif  /* USE_DHCP */
-    LCD_UsrLog ("The network cable is not connected\n");
+    DebugPrint ("The network cable is not connected\n");
   } 
 }
 
@@ -123,7 +123,7 @@ void DHCP_thread(void const * argument)
         ip_addr_set_zero_ip4(&netif->gw);       
         dhcp_start(netif);
         DHCP_state = DHCP_WAIT_ADDRESS;
-        LCD_UsrLog ("  State: Looking for DHCP server ...\n");
+        DebugPrint ("  State: Looking for DHCP server ...\n");
       }
       break;
       
@@ -134,7 +134,7 @@ void DHCP_thread(void const * argument)
           DHCP_state = DHCP_ADDRESS_ASSIGNED;	
          
           sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));   
-          LCD_UsrLog ("IP address assigned by a DHCP server: %s\n", iptxt);
+          DebugPrint ("IP address assigned by a DHCP server: %s\n", iptxt);
         }
         else
         {
@@ -155,8 +155,8 @@ void DHCP_thread(void const * argument)
             netif_set_addr(netif, ip_2_ip4(&ipaddr), ip_2_ip4(&netmask), ip_2_ip4(&gw));
             
             sprintf((char *)iptxt, "%s", ip4addr_ntoa((const ip4_addr_t *)&netif->ip_addr));
-            LCD_UsrLog ("DHCP Timeout !! \n");
-            LCD_UsrLog ("Static IP address: %s\n", iptxt);  
+            DebugPrint ("DHCP Timeout !! \n");
+            DebugPrint ("Static IP address: %s\n", iptxt);  
           }
         }
       }

@@ -51,7 +51,7 @@
           <OutputName>STM32F769I_DISCOVERY</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath></ListingPath>
@@ -373,7 +373,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F769xx,USE_STM32F769I_DISCO,USE_FULL_ASSERT,MBEDTLS_CONFIG_FILE="&lt;mbedtls_alt_config.h&gt;"</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Src;../../../../../../Drivers/CMSIS/Device/ST/STM32F7xx/Include;../../../../../../Drivers/STM32F7xx_HAL_Driver/Inc;../../../../../../Drivers/BSP/STM32F769I-Discovery;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components;../Third_Party/LwIP/src/include/;../Third_Party/LwIP/system;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/include;../../../../../../Utilities;../../../../../../Utilities/Log;..\..\LwIP_HTTP_Server_Socket_RTOS;..\..\LwIP_HTTP_Server_Netconn_RTOS;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\mbedTLS\include;..\MDK-ARM;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\LwIP\src\include\lwip\apps;..\..\MQTT_OverEthernet</IncludePath>
+              <IncludePath>../Inc;../Src;../../../../../../Drivers/CMSIS/Device/ST/STM32F7xx/Include;../../../../../../Drivers/STM32F7xx_HAL_Driver/Inc;../../../../../../Drivers/BSP/STM32F769I-Discovery;../../../../../../Drivers/BSP/Components/Common;../../../../../../Drivers/BSP/Components;../Third_Party/LwIP/src/include/;../Third_Party/LwIP/system;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../../../../../../Middlewares/Third_Party/FreeRTOS/Source/include;../../../../../../Utilities;../../../../../../Utilities/Log;..\..\LwIP_HTTP_Server_Socket_RTOS;..\..\LwIP_HTTP_Server_Netconn_RTOS;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\mbedTLS\include;..\MDK-ARM;..\Third_Party\mbedTLS\include\mbedtls;..\Third_Party\LwIP\src\apps\sntp;..\Third_Party\LwIP\src\include\lwip\apps;..\..\MQTT_OverEthernet;..\SEGGER_RTT_V680a\RTT</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -415,13 +415,6 @@
       <Groups>
         <Group>
           <GroupName>Application/Utilities</GroupName>
-          <Files>
-            <File>
-              <FileName>lcd_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Utilities/Log/lcd_log.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>Middlewares/LwIP/Core/IPv4</GroupName>
@@ -480,13 +473,6 @@
         </Group>
         <Group>
           <GroupName>Drivers/BSP/Component</GroupName>
-          <Files>
-            <File>
-              <FileName>otm8009a.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/BSP/Components/otm8009a/otm8009a.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>Drivers/STM32F7xx_HAL_Driver</GroupName>
@@ -625,11 +611,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
-            </File>
-            <File>
-              <FileName>httpserver-netconn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/httpserver-netconn.c</FilePath>
             </File>
             <File>
               <FileName>stm32f7xx_hal_timebase_tim.c</FileName>
@@ -825,11 +806,6 @@
               <FileName>stm32f769i_discovery.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f769i_discovery_lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.c</FilePath>
             </File>
             <File>
               <FileName>stm32f769i_discovery_sdram.c</FileName>
@@ -1379,6 +1355,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>RTT</GroupName>
+          <Files>
+            <File>
+              <FileName>SEGGER_RTT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SEGGER_RTT_V680a\RTT\SEGGER_RTT.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SEGGER_RTT_V680a\RTT\SEGGER_RTT_printf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -1388,8 +1379,8 @@
   <RTE>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="CMSIS Core">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.4.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.7.0"/>
         <targetInfos>
           <targetInfo name="STM32F769I_DISCOVERY"/>
         </targetInfos>
