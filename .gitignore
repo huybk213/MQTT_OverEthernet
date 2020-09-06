@@ -26,3 +26,23 @@
 *.axf
 
 MDK-ARM/Project.uvoptx
+
+Third_Party.zip
+
+*.html
+
+Third_Party/LwIP/doc/doxygen/output/html/
+
+Third_Party/mbedTLS/tests/data_files/dir3/
+
+Third_Party/mbedTLS/tests/data_files/
+
+Third_Party/mbedTLS/tests/git-scripts/
+
+Third_Party/mbedTLS/tests/
+
+Third_Party/mbedTLS/visualc/VS2010/
+
+Third_Party/mbedTLS/scripts/
+
+Third_Party/mbedTLS/programs/test/
