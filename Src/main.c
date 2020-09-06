@@ -164,6 +164,7 @@ int main(void)
   */
 static void StartThread(void const * argument)
 { 
+    DebugPrint("Start thread\r\n");
   /* Initialize LCD and LEDs */
   BSP_Config();
   

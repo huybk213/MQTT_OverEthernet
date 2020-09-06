@@ -23,6 +23,7 @@
 #include "lwip/altcp.h"
 #include "lwip/altcp_tls.h"
 #include "lwip/priv/altcp_priv.h"
+#include "mbedtls/debug.h"
 
 #define MQTT_CLIENT_THREAD_PRIO    osPriorityAboveNormal
 #define MQTT_CLIENT_SUB_QOS        0
@@ -236,7 +237,7 @@ static int TLS_Init(void)
     if (ret != 0)
     {
         DebugPrint("Parse root ca error -0x%08X\r\n", ret);
-        assert_failed(__FILE__, __LINE__);
+        assert_failed((uint8_t*)__FILE__, __LINE__);
         return -1;
     }
     
@@ -244,7 +245,7 @@ static int TLS_Init(void)
     if (ret != 0)
     {
         DebugPrint("Parse client key error -0x%08X\r\n", ret);
-        assert_failed(__FILE__, __LINE__);
+        assert_failed((uint8_t*)__FILE__, __LINE__);
         return -1;
     }
 
@@ -252,12 +253,13 @@ static int TLS_Init(void)
     if (ret != 0)
     {
         DebugPrint("Parse private key error -0x%08X\r\n", ret);
-        assert_failed(__FILE__, __LINE__);
+        assert_failed((uint8_t*)__FILE__, __LINE__);
         return -1;
     }
     
     DebugPrint("Parse certificate success\r\n");
     mbedtls_ssl_conf_ca_chain(&conf, &x509_root_ca, NULL);
+    mbedtls_debug_set_threshold(1);
     mbedtls_ssl_conf_authmode(&conf, MBEDTLS_SSL_VERIFY_REQUIRED);
 //    mbedtls_ssl_conf_verify(&conf, (int (*)(void *, mbedtls_x509_crt *, int, uint32_t *))mqtt_tls_verify, NULL );
     
@@ -273,7 +275,7 @@ static int TLS_Init(void)
     if ((ret = mbedtls_ssl_set_hostname(&ssl, m_mqtt_broker)) != 0)
     {
         DebugPrint(" failed\n  ! mbedtls_ssl_set_hostname returned %d\n\n", ret);
-        assert_failed(__FILE__, __LINE__);
+        assert_failed((uint8_t*)__FILE__, __LINE__);
         return -1;
     }
 

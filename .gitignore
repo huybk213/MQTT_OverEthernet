@@ -54,3 +54,7 @@ Third_Party/mbedTLS/programs/test/
 MDK-ARM/Project.uvguix.HuyTV
 
 *.hex
+
+MDK-ARM/JLinkSettings.ini
+
+MDK-ARM/JLinkLog.txt

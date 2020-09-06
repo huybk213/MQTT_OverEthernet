@@ -79,8 +79,13 @@ typedef int sys_prot_t;
 
 #endif
 
-#define LWIP_PLATFORM_ASSERT(x) do {printf("Assertion \"%s\" failed at line %d in %s\n", \
-                                     x, __LINE__, __FILE__); } while(0)
+//#define LWIP_PLATFORM_ASSERT(x) do {printf("Assertion \"%s\" failed at line %d in %s\n", \
+//                                     x, __LINE__, __FILE__); } while(0)
+#include "app_debug.h"
+#include <stdint.h>
+
+extern void assert_failed(uint8_t* file, uint32_t line);
+#define LWIP_PLATFORM_ASSERT(x)         do {DebugPrint("Assertion \"%s\" failed\r\n", x); assert_failed(__FILE__, __LINE__);} while(0)
 
 /* Define random number generator function */
 #define LWIP_RAND() ((u32_t)rand())
